@@ -8,7 +8,7 @@ const COMMON = `#version 300 es
 precision highp float;
 precision highp int;
 uniform mat4 uViewProj;
-uniform vec4 uCamPos, uCamRight, uCamUp, uCamFwd, uPointer, uEnv, uExtra, uViewport;
+uniform vec4 uCamPos, uCamRight, uCamUp, uCamFwd, uPointer, uEnv, uExtra, uViewport, uFocus;
 uniform highp sampler2D uHeights;
 const float X0 = ${WORLD.X0.toFixed(1)}, Z0 = ${WORLD.Z0.toFixed(1)}, SX = ${WORLD.SX.toFixed(1)}, SZ = ${WORLD.SZ.toFixed(1)};
 const vec2 SUMMIT_XZ = vec2(${WORLD.SUMMIT[0].toFixed(1)}, ${WORLD.SUMMIT[2].toFixed(1)});
@@ -153,6 +153,7 @@ void main() {
       x += pull.x; z += pull.y;
       heat += k * 0.8 * uPointer.w;
     }
+    heat += uFocus.y * 2.6 * exp(-pow((s - uFocus.x) / 0.06, 2.0));
     heat = (heat + uExtra.x * 0.5) * smoothstep(0.0, 0.03, s) * (1.0 - 0.7 * smoothstep(0.96, 1.0, s));
     pos = vec3(x, heightAt(vec2(x, z)) + 0.32, z);
   } else {
@@ -203,9 +204,15 @@ function program(gl, vs, fs) {
   return p;
 }
 
-export async function createRenderer({ canvas, lowPower, state }) {
+export async function createRenderer({ canvas, lowPower, state, allowSoftware = false }) {
   const gl = canvas.getContext('webgl2', { antialias: !lowPower, alpha: false, depth: true, powerPreference: lowPower ? 'low-power' : 'high-performance' });
   if (!gl) throw new Error('no webgl2');
+  const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+  const gpuName = String(gl.getParameter(dbg ? dbg.UNMASKED_RENDERER_WEBGL : gl.RENDERER) || '');
+  if (!allowSoftware && /swiftshader|llvmpipe|softpipe|software|basic render/i.test(gpuName)) {
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+    throw new Error('software renderer: ' + gpuName);
+  }
   const counts = torchCounts(lowPower, 'WebGL2');
   const n = GRID(true);
   const heights = await bakeHeights(n);
@@ -264,6 +271,7 @@ export async function createRenderer({ canvas, lowPower, state }) {
         gl.uniform4f(loc(p, 'uEnv'), state.hour, 0, counts.torches, counts.torches + counts.embers);
         gl.uniform4f(loc(p, 'uExtra'), state.flare, 0.0105, n, w / Math.max(1, canvas.clientWidth || w));
         gl.uniform4f(loc(p, 'uViewport'), w, h, 0.5, counts.embers);
+        gl.uniform4f(loc(p, 'uFocus'), state.focus[0], state.focus[1], 0, 0);
         gl.uniform1i(loc(p, 'uHeights'), 0);
       };
       gl.activeTexture(gl.TEXTURE0);

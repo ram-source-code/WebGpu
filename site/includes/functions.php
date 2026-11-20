@@ -19,6 +19,20 @@ function client(string $what): string
     return '<span class="client-slot">[CLIENT: ' . e($what) . ']</span>';
 }
 
+/** One dashed block holding several owner-supplied lines (label => what to write). */
+function client_block(array $lines): string
+{
+    $o = '<span class="client-block">';
+    foreach ($lines as $label => $what) $o .= '<span class="client-block__line"><span class="client-block__label">' . e($label) . '</span> [CLIENT: ' . e($what) . ']</span>';
+    return $o . '</span>';
+}
+
+/** Where a project's fire sits on the road (0 = valley, 1 = summit), from its order in the list. */
+function climb_position(int $i, int $n): float
+{
+    return round(($i + 1) / ($n + 1), 2);
+}
+
 /* ---------- URLs (spec E.a) ---------- */
 
 // Pass paths un-encoded and site-relative; append "#fragment" after the call.

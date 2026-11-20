@@ -2,7 +2,7 @@
 import { WORLD, PALETTE, GRID, torchCounts, bakeHeights, sampleHeights } from 'rs/scene-core';
 
 // Uniform block: 12 × vec4f = 192 bytes (std layout: mat4 = 4 vec4, then 8 vec4).
-const UNIFORM_FLOATS = 48;
+const UNIFORM_FLOATS = 52;
 
 const COMMON = /* wgsl */ `
 struct U {
@@ -14,7 +14,8 @@ struct U {
   pointer: vec4f,    // xyz on the ground, w strength
   env: vec4f,        // hour 0..1, dt, torch count, total count
   extra: vec4f,      // flare, fog density, grid n, pixel ratio
-  viewport: vec4f,   // width, height
+  viewport: vec4f,   // width, height, brightness, ember count
+  focus: vec4f,      // road position 0..1 to light up, strength
 };
 struct P { pos: vec4f, vel: vec4f };  // pos.w heat/life, vel.w seed
 
@@ -130,6 +131,7 @@ fn simulate(@builtin(global_invocation_id) gid: vec3u) {
     vel += acc * dt;
     pos += vel * dt;
     pos.y = max(pos.y, heightAt(pos.xz) + 0.25);
+    heat += u.focus.y * 2.6 * exp(-pow((tg.w - u.focus.x) / 0.06, 2.0));
     heat = (heat + u.extra.x * 0.5) * smoothstep(0.0, 0.03, tg.w) * (1.0 - 0.7 * smoothstep(0.96, 1.0, tg.w));
     parts[i] = P(vec4f(pos, heat), vec4f(vel, seed));
     return;
@@ -294,10 +296,11 @@ async function checked(device, label, code) {
   return module;
 }
 
-export async function createRenderer({ canvas, lowPower, state, noPresent = false }) {
+export async function createRenderer({ canvas, lowPower, state, noPresent = false, allowSoftware = false }) {
   if (!navigator.gpu) throw new Error('no navigator.gpu');
   const adapter = await navigator.gpu.requestAdapter({ powerPreference: lowPower ? 'low-power' : 'high-performance' });
   if (!adapter) throw new Error('no adapter');
+  if (adapter.info?.isFallbackAdapter && !allowSoftware && !noPresent) throw new Error('software adapter');
   const device = await adapter.requestDevice({ label: 'ridge' });
   // noPresent: tests render only to offscreen textures (headless browsers without a compositor)
   const context = noPresent ? null : canvas.getContext('webgpu');
@@ -447,6 +450,7 @@ export async function createRenderer({ canvas, lowPower, state, noPresent = fals
       uni.set([state.hour, paused ? 0 : dt, counts.torches, total], 36);
       uni.set([state.flare, 0.0105, n, w / Math.max(1, canvas.clientWidth || w)], 40);
       uni.set([w, h, 0.5, counts.embers], 44);
+      uni.set([state.focus[0], state.focus[1], 0, 0], 48);
       device.queue.writeBuffer(uniBuf, 0, uni);
 
       const enc = device.createCommandEncoder({ label: 'frame' });

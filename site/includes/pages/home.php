@@ -19,17 +19,23 @@ $work = projects();
   </div>
 </section>
 
-<section class="ground ground--night ridge-top" id="work" aria-labelledby="work-title">
+<section class="ground ground--night ground--see ridge-top ridge-bottom" id="work" aria-labelledby="work-title">
   <div class="wrap">
     <h2 id="work-title" class="section-title">Selected work</h2>
-    <p class="section-intro">Each fire on the slope is a project, starting with the scene you just scrolled past.</p>
+    <p class="section-intro">Each project is a fire on the road up the ridge. Point at one and its stretch of the procession lights up behind the page.</p>
     <ol class="climb">
-<?php foreach ($work as $p): ?>
+<?php foreach ($work as $i => $p): $at = climb_position($i, count($work)); ?>
       <li class="climb__item<?= $p['placeholder'] ? ' climb__item--slot' : '' ?>">
-        <a class="climb__link" href="<?= e(url('/work/' . $p['slug'])) ?>">
-          <span class="climb__title"><?= $p['placeholder'] ? client('project name') : e($p['title']) ?></span>
-          <span class="climb__meta"><?= $p['placeholder'] ? client('year, your role') : e($p['year'] . ' · ' . $p['role']) ?></span>
-          <span class="climb__summary"><?= $p['placeholder'] ? client('one sentence: what it is and what you did') : e($p['summary']) ?></span>
+        <a class="climb__link" href="<?= e(url('/work/' . $p['slug'])) ?>" data-climb="<?= e((string)$at) ?>">
+<?php if ($p['placeholder']): ?>
+          <span class="climb__title">Case study, to be written</span>
+          <span class="climb__meta">Fire <?= (int)round($at * 100) ?>% up the road</span>
+          <?= client_block(['Title' => 'project name', 'Year and role' => 'e.g. 2025, lead developer', 'Summary' => 'one sentence: what it is and what you did']) ?>
+<?php else: ?>
+          <span class="climb__title"><?= e($p['title']) ?></span>
+          <span class="climb__meta"><?= e($p['year'] . ' · ' . $p['role']) ?> · fire <?= (int)round($at * 100) ?>% up the road</span>
+          <span class="climb__summary"><?= e($p['summary']) ?></span>
+<?php endif ?>
         </a>
       </li>
 <?php endforeach ?>
@@ -40,7 +46,7 @@ $work = projects();
 
 <div class="window"><p class="window__caption">Midnight. The line reaches the summit.</p></div>
 
-<section class="ground ground--ember ridge-top" aria-labelledby="about-title">
+<section class="ground ground--ember ridge-top ridge-bottom" aria-labelledby="about-title">
   <div class="wrap split">
     <h2 id="about-title" class="section-title">Why a mountain on fire</h2>
     <div class="prose">

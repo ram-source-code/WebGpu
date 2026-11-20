@@ -60,7 +60,7 @@ if ($p['placeholder']):
       <ul class="tiers">
         <li><span class="tiers__name">WebGPU</span> 14,336 torches, 6,144 embers and 64 far bonfires on a desktop GPU; 6,144 torches and 2,048 embers on phones. All of it moves in a compute pass.</li>
         <li><span class="tiers__name">WebGL2</span> The same scene, 10,240 torches on desktop and 4,096 on phones, with motion computed in the vertex shader instead of a compute pass.</li>
-        <li><span class="tiers__name">No GPU</span> A still image of the same ridge. Every page reads and works without it.</li>
+        <li><span class="tiers__name">No GPU</span> A still image of the same ridge, also used when the graphics chip only renders in software, when data saver is on, or with JavaScript off. Every page reads and works without the scene.</li>
       </ul>
       <p>If frames start running long, the scene lowers its resolution first, then halves the torches. A pause button sits under every scene, and with reduced motion turned on in your system settings the scene starts paused.</p>
     </div>

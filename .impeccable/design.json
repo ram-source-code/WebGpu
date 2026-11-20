@@ -1,0 +1,635 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-20T00:00:00Z",
+  "title": "Design System: Ramyar Salah",
+  "extensions": {
+    "colorMeta": {
+      "night": {
+        "role": "secondary",
+        "displayName": "Night Indigo",
+        "canonical": "oklch(0.2 0.055 272)",
+        "tonalRamp": [
+          "oklch(0.150 0.029 272)",
+          "oklch(0.264 0.036 272)",
+          "oklch(0.379 0.044 272)",
+          "oklch(0.493 0.051 272)",
+          "oklch(0.607 0.051 272)",
+          "oklch(0.721 0.044 272)",
+          "oklch(0.836 0.036 272)",
+          "oklch(0.950 0.029 272)"
+        ],
+        "note": "theme-color meta uses #151a3a as the hex stand-in."
+      },
+      "dusk": {
+        "role": "secondary",
+        "displayName": "Dusk Indigo",
+        "canonical": "oklch(0.29 0.075 272)",
+        "tonalRamp": [
+          "oklch(0.150 0.040 272)",
+          "oklch(0.264 0.050 272)",
+          "oklch(0.379 0.060 272)",
+          "oklch(0.493 0.070 272)",
+          "oklch(0.607 0.070 272)",
+          "oklch(0.721 0.060 272)",
+          "oklch(0.836 0.050 272)",
+          "oklch(0.950 0.040 272)"
+        ]
+      },
+      "ink": {
+        "role": "secondary",
+        "displayName": "Ink",
+        "canonical": "oklch(0.22 0.06 272)",
+        "tonalRamp": [
+          "oklch(0.150 0.032 272)",
+          "oklch(0.264 0.040 272)",
+          "oklch(0.379 0.048 272)",
+          "oklch(0.493 0.056 272)",
+          "oklch(0.607 0.056 272)",
+          "oklch(0.721 0.048 272)",
+          "oklch(0.836 0.040 272)",
+          "oklch(0.950 0.032 272)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "oklch(0.4 0.06 272)",
+        "tonalRamp": [
+          "oklch(0.150 0.032 272)",
+          "oklch(0.264 0.040 272)",
+          "oklch(0.379 0.048 272)",
+          "oklch(0.493 0.056 272)",
+          "oklch(0.607 0.056 272)",
+          "oklch(0.721 0.048 272)",
+          "oklch(0.836 0.040 272)",
+          "oklch(0.950 0.032 272)"
+        ]
+      },
+      "haze": {
+        "role": "neutral",
+        "displayName": "Haze",
+        "canonical": "oklch(0.82 0.035 272)",
+        "tonalRamp": [
+          "oklch(0.150 0.018 272)",
+          "oklch(0.264 0.023 272)",
+          "oklch(0.379 0.028 272)",
+          "oklch(0.493 0.033 272)",
+          "oklch(0.607 0.033 272)",
+          "oklch(0.721 0.028 272)",
+          "oklch(0.836 0.023 272)",
+          "oklch(0.950 0.018 272)"
+        ]
+      },
+      "field-border": {
+        "role": "neutral",
+        "displayName": "Field Border",
+        "canonical": "oklch(0.5 0.05 272)",
+        "tonalRamp": [
+          "oklch(0.150 0.026 272)",
+          "oklch(0.264 0.033 272)",
+          "oklch(0.379 0.040 272)",
+          "oklch(0.493 0.047 272)",
+          "oklch(0.607 0.047 272)",
+          "oklch(0.721 0.040 272)",
+          "oklch(0.836 0.033 272)",
+          "oklch(0.950 0.026 272)"
+        ]
+      },
+      "ember": {
+        "role": "primary",
+        "displayName": "Torch Ember",
+        "canonical": "oklch(0.72 0.16 52)",
+        "tonalRamp": [
+          "oklch(0.150 0.084 52)",
+          "oklch(0.264 0.106 52)",
+          "oklch(0.379 0.128 52)",
+          "oklch(0.493 0.149 52)",
+          "oklch(0.607 0.149 52)",
+          "oklch(0.721 0.128 52)",
+          "oklch(0.836 0.106 52)",
+          "oklch(0.950 0.084 52)"
+        ]
+      },
+      "ember-deep": {
+        "role": "primary",
+        "displayName": "Deep Ember",
+        "canonical": "oklch(0.52 0.17 38)",
+        "tonalRamp": [
+          "oklch(0.150 0.090 38)",
+          "oklch(0.264 0.113 38)",
+          "oklch(0.379 0.136 38)",
+          "oklch(0.493 0.159 38)",
+          "oklch(0.607 0.159 38)",
+          "oklch(0.721 0.136 38)",
+          "oklch(0.836 0.113 38)",
+          "oklch(0.950 0.090 38)"
+        ]
+      },
+      "ember-muted": {
+        "role": "primary",
+        "displayName": "Banked Ember",
+        "canonical": "oklch(0.3 0.08 40)",
+        "tonalRamp": [
+          "oklch(0.150 0.042 40)",
+          "oklch(0.264 0.053 40)",
+          "oklch(0.379 0.064 40)",
+          "oklch(0.493 0.075 40)",
+          "oklch(0.607 0.075 40)",
+          "oklch(0.721 0.064 40)",
+          "oklch(0.836 0.053 40)",
+          "oklch(0.950 0.042 40)"
+        ]
+      },
+      "saffron": {
+        "role": "primary",
+        "displayName": "Saffron Core",
+        "canonical": "oklch(0.87 0.15 85)",
+        "tonalRamp": [
+          "oklch(0.150 0.079 85)",
+          "oklch(0.264 0.099 85)",
+          "oklch(0.379 0.120 85)",
+          "oklch(0.493 0.140 85)",
+          "oklch(0.607 0.140 85)",
+          "oklch(0.721 0.120 85)",
+          "oklch(0.836 0.099 85)",
+          "oklch(0.950 0.079 85)"
+        ]
+      },
+      "limestone": {
+        "role": "neutral",
+        "displayName": "Limestone",
+        "canonical": "oklch(0.95 0.02 85)",
+        "tonalRamp": [
+          "oklch(0.150 0.011 85)",
+          "oklch(0.264 0.013 85)",
+          "oklch(0.379 0.016 85)",
+          "oklch(0.493 0.019 85)",
+          "oklch(0.607 0.019 85)",
+          "oklch(0.721 0.016 85)",
+          "oklch(0.836 0.013 85)",
+          "oklch(0.950 0.011 85)"
+        ]
+      },
+      "limestone-2": {
+        "role": "neutral",
+        "displayName": "Worn Limestone",
+        "canonical": "oklch(0.9 0.03 80)",
+        "tonalRamp": [
+          "oklch(0.150 0.016 80)",
+          "oklch(0.264 0.020 80)",
+          "oklch(0.379 0.024 80)",
+          "oklch(0.493 0.028 80)",
+          "oklch(0.607 0.028 80)",
+          "oklch(0.721 0.024 80)",
+          "oklch(0.836 0.020 80)",
+          "oklch(0.950 0.016 80)"
+        ]
+      },
+      "field-paper": {
+        "role": "neutral",
+        "displayName": "Field Paper",
+        "canonical": "oklch(0.99 0.008 85)",
+        "tonalRamp": [
+          "oklch(0.150 0.004 85)",
+          "oklch(0.264 0.005 85)",
+          "oklch(0.379 0.006 85)",
+          "oklch(0.493 0.007 85)",
+          "oklch(0.607 0.007 85)",
+          "oklch(0.721 0.006 85)",
+          "oklch(0.836 0.005 85)",
+          "oklch(0.950 0.004 85)"
+        ]
+      },
+      "error": {
+        "role": "functional",
+        "displayName": "Error Red",
+        "canonical": "oklch(0.48 0.19 28)",
+        "tonalRamp": [
+          "oklch(0.150 0.100 28)",
+          "oklch(0.264 0.126 28)",
+          "oklch(0.379 0.152 28)",
+          "oklch(0.493 0.177 28)",
+          "oklch(0.607 0.177 28)",
+          "oklch(0.721 0.152 28)",
+          "oklch(0.836 0.126 28)",
+          "oklch(0.950 0.100 28)"
+        ]
+      }
+    },
+    "groundTokens": {
+      "night": {
+        "--bg": "night",
+        "--fg": "limestone",
+        "--muted": "haze",
+        "--accent": "saffron",
+        "--line": "oklch(0.82 0.035 272 / 0.28)",
+        "--focus": "saffron",
+        "colorScheme": "dark"
+      },
+      "ember": {
+        "--bg": "ember",
+        "--fg": "ink",
+        "--muted": "ember-muted",
+        "--accent": "ink",
+        "--line": "oklch(0.22 0.06 272 / 0.3)",
+        "--focus": "ink",
+        "colorScheme": "light"
+      },
+      "dawn": {
+        "--bg": "limestone",
+        "--fg": "ink",
+        "--muted": "ink-soft",
+        "--accent": "ember-deep",
+        "--line": "oklch(0.22 0.06 272 / 0.18)",
+        "--focus": "ink",
+        "colorScheme": "light"
+      },
+      "see-through-night": {
+        "--bg": "oklch(0.2 0.055 272 / 0.8)",
+        "inherits": "night"
+      },
+      "footer": {
+        "background": "limestone-2",
+        "color": "ink",
+        "--focus": "ink",
+        "colorScheme": "light"
+      }
+    },
+    "scrims": [
+      {
+        "name": "hero-top",
+        "value": "linear-gradient(to bottom, oklch(0.2 0.055 272 / 0.55), transparent 22rem)"
+      },
+      {
+        "name": "scene-bar",
+        "value": "linear-gradient(to top, oklch(0.2 0.055 272 / 0.7), transparent)"
+      },
+      {
+        "name": "band-top",
+        "value": "linear-gradient(oklch(0.2 0.055 272 / 0.85), oklch(0.2 0.055 272 / 0.5) 45%, transparent)",
+        "purpose": "10rem at the top of an inner-page band, under the header."
+      },
+      {
+        "name": "band-foot",
+        "value": "linear-gradient(transparent, oklch(0.2 0.055 272 / 0.85))",
+        "purpose": "Bottom 70% of the band, under the title."
+      },
+      {
+        "name": "caption-plate",
+        "value": "oklch(0.2 0.055 272 / 0.62)"
+      }
+    ],
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The name in the home hero.",
+        "css": "font-stretch: 62%"
+      },
+      "display-band": {
+        "displayName": "Display band",
+        "purpose": "Inner-page titles over the band, page heads; close and error titles are close variants.",
+        "css": "font-stretch: 64%"
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles on grounds.",
+        "css": "font-stretch: 70%"
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Work entry names.",
+        "css": "font-stretch: 70%"
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Prose headings, footer ask, fallback-tier names.",
+        "css": "font-stretch: 75%"
+      },
+      "mark": {
+        "displayName": "Name mark",
+        "purpose": "Header name mark.",
+        "css": "font-stretch: 72%"
+      },
+      "caption": {
+        "displayName": "Window caption",
+        "purpose": "Hour captions in the scene windows.",
+        "css": "font-stretch: 75%"
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "One line under hero, band and close titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading text, 38rem measure; font-size-adjust: from-font."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Road position, scene status, meta lines; tabular figures."
+      }
+    },
+    "shadows": [
+      {
+        "name": "fire-glow",
+        "value": "0 0.35rem 0.9rem -0.35rem oklch(0.1 0.04 272 / 0.7)",
+        "purpose": "Under the ember button only."
+      },
+      {
+        "name": "mark-lift",
+        "value": "0 1px 3px oklch(0.1 0.04 272 / 0.6)",
+        "purpose": "Under the altitude rail dot."
+      }
+    ],
+    "edges": [
+      {
+        "name": "ridge",
+        "value": "mask: url(assets/img/ridge.svg) center bottom / 100% 100% no-repeat",
+        "purpose": "Pseudo-element in the ground colour, height clamp(36px, 6vw, 96px), above the top edge (ridge-top) and mirrored with scale: 1 -1 below the bottom (ridge-bottom), overlapping 1px."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All slides and fades."
+      },
+      {
+        "name": "state",
+        "value": "0.2s",
+        "purpose": "Button, field and toggle colour changes; button translate."
+      },
+      {
+        "name": "arrow-slide",
+        "value": "translate 0.2rem 0 over 0.25s ease-out (0.3rem over 0.3s on work entries)",
+        "purpose": "Trailing arrows on hover."
+      },
+      {
+        "name": "press",
+        "value": "translate 0 1px",
+        "purpose": "Button :active."
+      },
+      {
+        "name": "canvas-fade",
+        "value": "opacity 0.9s ease-out",
+        "purpose": "Live canvas fades in over the poster; none under reduced motion."
+      },
+      {
+        "name": "scroll-is-the-hour",
+        "value": "state.hour = scrollY / (scrollHeight - innerHeight)",
+        "purpose": "Home: page progress drives the scene hour (0 dusk, 0.5 midnight, 1 first light) and the camera climb. Inner pages fix the hour per band."
+      },
+      {
+        "name": "altitude-climb",
+        "value": "animation: climb linear both; animation-timeline: scroll(root)",
+        "purpose": "Rail dot travels 40vh and turns saffron; only with scroll timelines and no reduced motion."
+      },
+      {
+        "name": "view-transition",
+        "value": "@view-transition { navigation: auto } old 0.22s ease-in fade-out, new 0.32s ease-out fade-in",
+        "purpose": "Cross-document page change; only with prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Scene starts paused (a stored pause/play choice in localStorage rs-scene-paused wins), parallax and pointer pull stop, no view transitions, rail dot static, no canvas fade. Scroll still redraws the paused frame at the new hour."
+      }
+    ],
+    "scene": {
+      "ladder": [
+        "WebGPU: compute simulation + additive render",
+        "WebGL2: motion in the vertex shader",
+        "Still poster (AVIF/WebP, dusk/night/dawn at 960 and 1920, dusk portrait 720)"
+      ],
+      "keepsStill": [
+        "WebGPU adapter.info.isFallbackAdapter",
+        "WebGL renderer matching /swiftshader|llvmpipe|softpipe|software|basic render/i",
+        "Save-Data: on or ?still (scene JS not loaded)",
+        "JavaScript off",
+        "sustained under ~20fps after all reductions"
+      ],
+      "palette": {
+        "space": "display sRGB",
+        "duskTop": [
+          0.11,
+          0.13,
+          0.34
+        ],
+        "duskHorizon": [
+          0.82,
+          0.4,
+          0.24
+        ],
+        "nightTop": [
+          0.035,
+          0.045,
+          0.14
+        ],
+        "nightHorizon": [
+          0.11,
+          0.12,
+          0.27
+        ],
+        "dawnTop": [
+          0.43,
+          0.53,
+          0.74
+        ],
+        "dawnHorizon": [
+          0.98,
+          0.87,
+          0.7
+        ],
+        "ember": [
+          1.0,
+          0.43,
+          0.12
+        ],
+        "saffron": [
+          1.0,
+          0.83,
+          0.4
+        ]
+      },
+      "hourMix": "dusk to night over 0 to 0.5, night to dawn over 0.5 to 1 (smoothstep); west afterglow at dusk, east glow at dawn; fire strength dims toward dawn",
+      "blend": "additive (one, one)",
+      "counts": {
+        "WebGPU": {
+          "desktop": {
+            "torches": 14336,
+            "embers": 6144,
+            "hill": 1536
+          },
+          "phone": {
+            "torches": 6144,
+            "embers": 2048,
+            "hill": 768
+          }
+        },
+        "WebGL2": {
+          "desktop": {
+            "torches": 10240,
+            "embers": 3072,
+            "hill": 1536
+          },
+          "phone": {
+            "torches": 4096,
+            "embers": 1024,
+            "hill": 768
+          }
+        }
+      },
+      "quality": "DPR capped at 1.75 (1.5 low power); long frames scale resolution by 0.8 down to 0.55, then halve torches, then stop and keep the still",
+      "interaction": "pointer or finger is a torch; walkers within reach turn toward it (stronger while pressed); hovering or focusing a work entry lights its road position; a sent message flares the summit"
+    },
+    "breakpoints": [
+      {
+        "name": "footer-two-column",
+        "value": "48rem"
+      },
+      {
+        "name": "split",
+        "value": "56rem"
+      },
+      {
+        "name": "altitude-labels",
+        "value": "80rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Fire Button",
+      "kind": "button",
+      "refersTo": "button-fire",
+      "description": "The primary action on night grounds and over the scene.",
+      "html": "<div class=\"ds-night\"><a class=\"ds-btn ds-btn-fire\" href=\"#\">Get in touch<svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a></div>",
+      "css": ".ds-night { background: var(--night, oklch(0.2 0.055 272)); padding: 1.5rem; } .ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; min-block-size: 48px; padding: 0 1.35rem; border: 1.5px solid transparent; border-radius: 999px; font-family: var(--text, 'Atkinson Hyperlegible Next', system-ui, sans-serif); font-size: 1.0625rem; font-weight: 700; line-height: 1.1; text-decoration: none; cursor: pointer; transition: background-color 0.2s, color 0.2s, border-color 0.2s, translate 0.2s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn:active { translate: 0 1px; } .ds-btn:focus-visible { outline: 3px solid var(--saffron, oklch(0.87 0.15 85)); outline-offset: 3px; } .ds-icon { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: translate 0.25s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn:hover .ds-icon { translate: 0.2rem 0; } .ds-btn-fire { background: var(--ember, oklch(0.72 0.16 52)); color: var(--night, oklch(0.2 0.055 272)); box-shadow: 0 0.35rem 0.9rem -0.35rem oklch(0.1 0.04 272 / 0.7); } .ds-btn-fire:hover { background: var(--saffron, oklch(0.87 0.15 85)); }"
+    },
+    {
+      "name": "Ink Button",
+      "kind": "button",
+      "refersTo": "button-ink",
+      "description": "The primary action on the dawn ground and the form submit.",
+      "html": "<div class=\"ds-dawn\"><button class=\"ds-btn ds-btn-ink\" type=\"button\">Write a message<svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></button></div>",
+      "css": ".ds-dawn { background: var(--limestone, oklch(0.95 0.02 85)); padding: 1.5rem; } .ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; min-block-size: 48px; padding: 0 1.35rem; border: 1.5px solid transparent; border-radius: 999px; font-family: var(--text, 'Atkinson Hyperlegible Next', system-ui, sans-serif); font-size: 1.0625rem; font-weight: 700; line-height: 1.1; text-decoration: none; cursor: pointer; transition: background-color 0.2s, color 0.2s, border-color 0.2s, translate 0.2s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn:active { translate: 0 1px; } .ds-btn:focus-visible { outline: 3px solid var(--ink, oklch(0.22 0.06 272)); outline-offset: 3px; } .ds-icon { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: translate 0.25s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn:hover .ds-icon { translate: 0.2rem 0; } .ds-btn-ink { background: var(--ink, oklch(0.22 0.06 272)); color: var(--limestone, oklch(0.95 0.02 85)); } .ds-btn-ink:hover { background: var(--dusk, oklch(0.29 0.075 272)); }"
+    },
+    {
+      "name": "Line Button",
+      "kind": "button",
+      "refersTo": "button-line",
+      "description": "Secondary action (copy the email address); inherits the ground text colour.",
+      "html": "<div class=\"ds-dawn\"><button class=\"ds-btn ds-btn-line\" type=\"button\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\"><rect x=\"8\" y=\"8\" width=\"12\" height=\"12\" rx=\"2\"/><path d=\"M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3\"/></svg>Copy email address</button></div>",
+      "css": ".ds-dawn { background: var(--limestone, oklch(0.95 0.02 85)); color: var(--ink, oklch(0.22 0.06 272)); padding: 1.5rem; } .ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; min-block-size: 48px; padding: 0 1.35rem; border: 1.5px solid transparent; border-radius: 999px; font-family: var(--text, 'Atkinson Hyperlegible Next', system-ui, sans-serif); font-size: 1.0625rem; font-weight: 700; line-height: 1.1; text-decoration: none; cursor: pointer; transition: background-color 0.2s, color 0.2s, border-color 0.2s, translate 0.2s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn:active { translate: 0 1px; } .ds-btn:focus-visible { outline: 3px solid var(--ink, oklch(0.22 0.06 272)); outline-offset: 3px; } .ds-icon { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: translate 0.25s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn:hover .ds-icon { translate: 0.2rem 0; } .ds-btn-line { border-color: currentColor; background: transparent; color: inherit; } .ds-btn-line:hover { background: oklch(0.22 0.06 272 / 0.08); }"
+    },
+    {
+      "name": "Primary Navigation",
+      "kind": "nav",
+      "refersTo": "mark",
+      "description": "Name mark left, three links right; ember rule marks the current page.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-mark\" href=\"#\">Ramyar Salah</a><ul class=\"ds-nav\"><li><a href=\"#\" aria-current=\"page\">Work</a></li><li><a href=\"#\">About</a></li><li><a href=\"#\">Contact</a></li></ul></header>",
+      "css": ".ds-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.25rem 1rem; padding: 0.75rem max(1rem, 4vw); background: var(--night, oklch(0.2 0.055 272)); color: var(--limestone, oklch(0.95 0.02 85)); font-family: var(--text, 'Atkinson Hyperlegible Next', system-ui, sans-serif); } .ds-mark { font-family: var(--display, 'Anybody', 'Arial Narrow', sans-serif); font-stretch: 72%; font-weight: 760; font-size: 1.2rem; line-height: 1; color: inherit; text-decoration: none; padding-block: 0.75rem; } .ds-nav { display: flex; gap: 0.25rem; margin: 0; padding: 0; list-style: none; } .ds-nav a { display: inline-block; padding: 0.7rem 0.6rem; color: inherit; font-weight: 600; text-decoration: none; border-block-end: 2px solid transparent; } .ds-nav a:hover { border-block-end-color: oklch(0.95 0.02 85 / 0.5); } .ds-nav a[aria-current=page] { border-block-end-color: var(--ember, oklch(0.72 0.16 52)); } .ds-nav a:focus-visible, .ds-mark:focus-visible { outline: 3px solid var(--saffron, oklch(0.87 0.15 85)); outline-offset: 3px; border-radius: 2px; }"
+    },
+    {
+      "name": "Climb Entry",
+      "kind": "custom",
+      "refersTo": "climb-link",
+      "description": "A work entry as a fire on the road: computed road position, condensed title, meta; lights its stretch of the procession on hover/focus.",
+      "html": "<ol class=\"ds-climb\"><li><a class=\"ds-climb-link\" href=\"#\"><span class=\"ds-climb-at\">50% up the road</span><span class=\"ds-climb-title\">Newroz on the ridge</span><span class=\"ds-climb-meta\">2026 · design and engineering</span></a></li></ol>",
+      "css": ".ds-climb { list-style: none; margin: 0; padding: 0; background: oklch(0.2 0.055 272 / 0.8); color: var(--limestone, oklch(0.95 0.02 85)); font-family: var(--text, 'Atkinson Hyperlegible Next', system-ui, sans-serif); border-block: 1px solid oklch(0.82 0.035 272 / 0.28); } .ds-climb-link { position: relative; display: grid; gap: 0.35rem; padding: 1.6rem 3rem 1.6rem 1.6rem; color: inherit; text-decoration: none; transition: background-color 0.25s; } .ds-climb-link::before { content: ''; position: absolute; inset-inline-start: 0.1rem; inset-block-start: 3.75rem; inline-size: 0.6rem; block-size: 0.6rem; border-radius: 50% 50% 50% 0; rotate: -45deg; background: var(--ember, oklch(0.72 0.16 52)); } .ds-climb-link:is(:hover, :focus-visible) { background: oklch(0.29 0.075 272 / 0.5); } .ds-climb-link:is(:hover, :focus-visible)::before { background: var(--saffron, oklch(0.87 0.15 85)); } .ds-climb-link:hover .ds-climb-title { color: var(--saffron, oklch(0.87 0.15 85)); } .ds-climb-link:focus-visible { outline: 3px solid var(--saffron, oklch(0.87 0.15 85)); outline-offset: 3px; } .ds-climb-at { color: var(--saffron, oklch(0.87 0.15 85)); font-size: 0.875rem; font-weight: 700; font-variant-numeric: tabular-nums; } .ds-climb-title { font-family: var(--display, 'Anybody', 'Arial Narrow', sans-serif); font-stretch: 70%; font-weight: 760; font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.9rem); line-height: 1; transition: color 0.2s; } .ds-climb-meta { color: var(--haze, oklch(0.82 0.035 272)); font-size: 0.95rem; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Scene Bar",
+      "kind": "custom",
+      "refersTo": "scene-toggle",
+      "description": "Status line naming the live renderer and torch count, with the pause pill and (case study) the hour slider.",
+      "html": "<div class=\"ds-scene-bar\"><p class=\"ds-scene-status\">WebGPU · 14,336 torches simulated on your device</p><label class=\"ds-hour\"><span>Hour</span><input type=\"range\" min=\"0\" max=\"1\" step=\"0.01\" value=\"0.5\" aria-valuetext=\"Midnight\"></label><button class=\"ds-toggle\" type=\"button\" aria-label=\"Pause the scene\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path d=\"M9 5v14M15 5v14\"/></svg>Pause</button></div>",
+      "css": ".ds-scene-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; padding: 3rem max(1rem, 4vw) 1rem; background: linear-gradient(to top, oklch(0.2 0.055 272 / 0.7), oklch(0.29 0.075 272)); font-family: var(--text, 'Atkinson Hyperlegible Next', system-ui, sans-serif); font-size: 0.875rem; color: var(--haze, oklch(0.82 0.035 272)); font-variant-numeric: tabular-nums; } .ds-scene-status { margin: 0; max-width: 46ch; } .ds-hour { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--limestone, oklch(0.95 0.02 85)); font-weight: 600; } .ds-hour input { inline-size: min(14rem, 40vw); accent-color: var(--ember, oklch(0.72 0.16 52)); min-height: 44px; } .ds-toggle { display: inline-flex; align-items: center; gap: 0.45rem; min-height: 44px; padding: 0 1rem; border: 1px solid oklch(0.82 0.035 272 / 0.5); border-radius: 999px; background: oklch(0.2 0.055 272 / 0.55); color: var(--limestone, oklch(0.95 0.02 85)); font: inherit; font-weight: 600; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; } .ds-toggle:hover { background: oklch(0.2 0.055 272 / 0.85); border-color: var(--saffron, oklch(0.87 0.15 85)); } .ds-toggle:focus-visible, .ds-hour input:focus-visible { outline: 3px solid var(--saffron, oklch(0.87 0.15 85)); outline-offset: 3px; } .ds-icon { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "field-input",
+      "description": "Contact form field on dawn, with its after-interaction error state.",
+      "html": "<div class=\"ds-dawn\"><div class=\"ds-field\"><label for=\"ds-email\">Email</label><input id=\"ds-email\" type=\"email\" value=\"name@\" aria-invalid=\"true\" aria-describedby=\"ds-email-error\"><p class=\"ds-field-error\" id=\"ds-email-error\">Enter an email address like name@example.com.</p></div></div>",
+      "css": ".ds-dawn { background: var(--limestone, oklch(0.95 0.02 85)); color: var(--ink, oklch(0.22 0.06 272)); padding: 1.5rem; font-family: var(--text, 'Atkinson Hyperlegible Next', system-ui, sans-serif); } .ds-field { display: grid; gap: 0.35rem; max-inline-size: 40rem; } .ds-field label { font-weight: 700; } .ds-field input { inline-size: 100%; min-block-size: 48px; padding: 0.7rem 0.9rem; font: inherit; font-size: max(1rem, 1em); line-height: 1.5; color: var(--ink, oklch(0.22 0.06 272)); background: var(--field-paper, oklch(0.99 0.008 85)); border: 1.5px solid var(--field-border, oklch(0.5 0.05 272)); border-radius: 0.55rem; transition: border-color 0.2s; } .ds-field input:hover { border-color: var(--ink, oklch(0.22 0.06 272)); } .ds-field input:focus-visible { outline: 3px solid var(--ink, oklch(0.22 0.06 272)); outline-offset: 2px; } .ds-field input[aria-invalid=true] { border-color: var(--error, oklch(0.48 0.19 28)); border-width: 2px; } .ds-field-error { margin: 0; color: var(--error, oklch(0.48 0.19 28)); font-weight: 600; font-size: 0.95rem; }"
+    },
+    {
+      "name": "Client Placeholder",
+      "kind": "chip",
+      "refersTo": "client-slot",
+      "description": "Dashed slot and block marking content only the owner can supply.",
+      "html": "<div class=\"ds-ember\"><p>Ramyar works from <span class=\"ds-client-slot\">[CLIENT: city and studio]</span>.</p><span class=\"ds-client-block\"><span><b>Title</b> [CLIENT: project name]</span><span><b>Year and role</b> [CLIENT: e.g. 2025, lead developer]</span></span></div>",
+      "css": ".ds-ember { background: var(--ember, oklch(0.72 0.16 52)); color: var(--ink, oklch(0.22 0.06 272)); padding: 1.5rem; font-family: var(--text, 'Atkinson Hyperlegible Next', system-ui, sans-serif); font-size: 1.0625rem; line-height: 1.6; } .ds-client-slot { display: inline-block; max-inline-size: 100%; padding: 0.3em 0.65em; border: 1px dashed currentColor; border-radius: 0.3em; line-height: 2.2; font-size: min(0.82em, 1.15rem); font-weight: 500; box-decoration-break: clone; -webkit-box-decoration-break: clone; } .ds-client-block { display: grid; gap: 0.2rem; padding: 0.7rem 0.9rem; border: 1px dashed currentColor; border-radius: 0.5rem; font-size: 0.9rem; max-inline-size: 36rem; }"
+    },
+    {
+      "name": "Ridge Edge",
+      "kind": "card",
+      "refersTo": "window-caption",
+      "description": "A ground meeting the scene along the ridge profile, with a window caption naming the hour above it.",
+      "html": "<div class=\"ds-window\"><p class=\"ds-caption\">Midnight. The line reaches the summit.</p><div class=\"ds-ridge\"><h2>Why a mountain on fire</h2></div></div>",
+      "css": ".ds-window { background: linear-gradient(var(--dusk, oklch(0.29 0.075 272)), var(--night, oklch(0.2 0.055 272))); padding-block-start: 1.5rem; } .ds-caption { margin: 0 0 calc(clamp(36px, 6vw, 96px) + 1rem) max(1rem, 4vw); inline-size: fit-content; padding: 0.5rem 0.85rem; border-radius: 0.5rem; background: oklch(0.2 0.055 272 / 0.62); color: var(--limestone, oklch(0.95 0.02 85)); font-family: var(--display, 'Anybody', 'Arial Narrow', sans-serif); font-stretch: 75%; font-weight: 700; font-size: 1.15rem; line-height: 1.25; } .ds-ridge { position: relative; background: var(--ember, oklch(0.72 0.16 52)); color: var(--ink, oklch(0.22 0.06 272)); padding: 2rem max(1rem, 4vw) 3rem; } .ds-ridge::before { content: ''; position: absolute; inset-inline: 0; inset-block-end: calc(100% - 1px); block-size: clamp(36px, 6vw, 96px); background: var(--ember, oklch(0.72 0.16 52)); clip-path: polygon(0 65%, 10% 52%, 20% 45%, 27% 19%, 33% 40%, 45% 86%, 55% 84%, 62% 50%, 72% 28%, 85% 60%, 100% 40%, 100% 100%, 0 100%); } .ds-ridge h2 { margin: 0; font-family: var(--display, 'Anybody', 'Arial Narrow', sans-serif); font-stretch: 70%; font-weight: 780; font-size: clamp(2.3rem, 1.4rem + 3.6vw, 4rem); line-height: 0.95; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "One Night on the Ridge",
+    "overview": "The whole site is a single night of Newroz on a Zagros ridge. A live GPU scene of torches climbing switchbacks to a summit fire sits behind the page, and the page itself is the night passing: dusk indigo at the top, deep night through the work, an ember-lit slope for the story, limestone dawn at the close. Each section is drenched in its hour's light; nothing sits on a neutral grey panel, and nothing is black.\n\nThe system is printed in three inks, mixed like overprints: an indigo you can name, a torch ember with a saffron core, and limestone. Type is tall and condensed like flames for display (Anybody, narrowed through its width axis) and plainly legible for reading (Atkinson Hyperlegible Next). Where a ground opens onto the scene it ends in a drawn mountain profile, not a box edge. Density is low and the copy is short: the scene carries the proof, and type carries the content, with no stock imagery.\n\nThe scene is an enhancement over a finished page. WebGPU draws it where it can, WebGL2 draws it where it cannot, and a still poster of the same ridge stands in everywhere else, including software GPUs, data saver, JavaScript off and reduced motion. Every tier is meant to look intended.",
+    "keyCharacteristics": [
+      "Three inks only: indigo (hue 272), ember to saffron (hues 38 to 85), limestone (hue 80 to 85). Every neutral is tinted by one of them.",
+      "Grounds change with the hour; each carries its own token set for background, text, muted, accent, rule line and focus.",
+      "Display in Anybody at 62 to 75% width and weights 700 to 820; reading in Atkinson Hyperlegible Next at 17px with 1.6 leading.",
+      "Ridgeline edges from one `ridge.svg` mask, top and mirrored bottom.",
+      "Scroll is the hour: page progress drives the scene's time of night and an altitude rail.",
+      "One accent action per view: the ember pill on night, the ink pill on dawn."
+    ],
+    "rules": [
+      {
+        "name": "The Three Inks Rule",
+        "body": "Indigo, ember-to-saffron and limestone are the only hues. A new colour is a new mix of these (an alpha, a lightness step on the same hue), never a fourth hue. Error red is the single functional exception.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never Black Rule",
+        "body": "The darkest colour is night indigo at L 0.2 with chroma 0.055. Shadows and scrims are indigo at an alpha, not black or grey.",
+        "section": "colors"
+      },
+      {
+        "name": "The Hour Ground Rule",
+        "body": "A section takes the ground of its hour and uses that ground's six tokens. Never place a neutral panel on a ground; change the ground instead.",
+        "section": "colors"
+      },
+      {
+        "name": "The Flame Width Rule",
+        "body": "Display type is always Anybody narrowed between 62% and 75% width, heavier as it gets narrower (820 at 62 to 64%, 760 to 780 at 70 to 75%). Never set Anybody at 100% width, and never set reading text in it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Reading Face Rule",
+        "body": "Everything a visitor reads in sentences, every label and every control is Atkinson Hyperlegible Next. No uppercase-tracked labels.",
+        "section": "typography"
+      },
+      {
+        "name": "The Lit From Behind Rule",
+        "body": "Surfaces do not float. If something needs separation from the scene, lay indigo under it at an alpha; reserve shadows for the two cases above.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** read colour only through a ground's six tokens (`--bg`, `--fg`, `--muted`, `--accent`, `--line`, `--focus`) and pick the ground by the hour: night, ember, dawn, or see-through night over the scene.",
+      "**Do** end a ground with the `ridge.svg` profile wherever it opens onto the scene, in the ground's own colour, mirrored at the bottom.",
+      "**Do** set display type in Anybody at 62 to 75% width and 700 to 820 weight, and everything read or operated in Atkinson Hyperlegible Next.",
+      "**Do** keep one primary action per view: ember fire pill on indigo or over the scene, ink pill on dawn; secondary actions are line pills or plain links.",
+      "**Do** keep every control at least 44px tall and give focus a 3px outline in the ground's focus colour.",
+      "**Do** mark missing owner content with a dashed `[CLIENT: …]` slot or block, in place, at its real position.",
+      "**Do** keep the page complete without the scene: posters for every hour, a status line that says which tier is showing, and a pause control whenever anything moves.",
+      "**Do** honour reduced motion: the scene starts paused (unless the visitor chose otherwise), parallax and pointer pull stop, the rail and page transitions stay still."
+    ],
+    "donts": [
+      "**Don't** introduce a fourth hue, a neutral grey, or black; mix a new value from indigo, ember-saffron or limestone instead. Error red stays on form errors.",
+      "**Don't** lift surfaces with shadows beyond the fire glow and the rail dot; separate things from the scene with indigo scrims.",
+      "**Don't** set Anybody at normal width or use it for body text, labels or controls; don't add uppercase-tracked labels.",
+      "**Don't** invent clients, projects, numbers or photos; a placeholder slot stays visible until the owner fills it.",
+      "**Don't** run the scene on a software GPU, with Save-Data on, or below about 20fps; keep the still.",
+      "**Don't** add stock imagery; the scene, the posters and type carry the pages."
+    ]
+  }
+}

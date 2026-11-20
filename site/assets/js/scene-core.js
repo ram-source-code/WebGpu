@@ -89,7 +89,7 @@ export function camera(state, w, h, zeroToOneDepth) {
   const p = smooth(Math.min(1, Math.max(0, state.progress)));
   const portrait = w < h;
   const eye = mix3(portrait ? [3, 5.5, 40] : [-3, 4.6, 31], portrait ? [6, 16, 12] : [3, 15, 6], p);
-  const look = mix3(portrait ? [8, 15.5, -22] : [9, 9.5, -20], [8, 15.5, -26], p);
+  const look = mix3(portrait ? [8, 19.5, -22] : [9, 9.5, -20], [8, 15.5, -26], p);
   // a little parallax from the pointer, damped in the loop
   eye[0] += state.parallax[0] * 1.6;
   eye[1] += state.parallax[1] * 0.6;
@@ -159,11 +159,19 @@ export async function startScene(root) {
     parallax: [0, 0], parallaxTarget: [0, 0],
     pointer: [0, 0, 0, 0], pointerNdc: null, pointerDown: false,
     flare: 0, time: 0,
+    focus: [0.5, 0], focusTarget: 0,
     quality: 1,
   };
 
+  // the scene is an enhancement: let the page load and settle first
+  if (document.readyState !== 'complete') await new Promise((r) => addEventListener('load', r, { once: true }));
+  await new Promise((r) => (window.requestIdleCallback ? requestIdleCallback(r, { timeout: 1200 }) : setTimeout(r, 150)));
+
   let renderer = null;
-  const opts = { canvas, lowPower: coarse || small, state };
+  // software rasterisers (no real GPU) would make the page janky: keep the still image instead.
+  // ?rsforce overrides this for testing in headless browsers.
+  const force = new URLSearchParams(location.search).has('rsforce');
+  const opts = { canvas, lowPower: coarse || small, state, allowSoftware: force };
   if ('gpu' in navigator) {
     try {
       const m = await import('rs/scene-webgpu');
@@ -185,7 +193,7 @@ export async function startScene(root) {
     }
   }
   if (!renderer) {
-    if (status) status.textContent = 'Still image: this browser has no WebGPU or WebGL2.';
+    if (status) status.textContent = 'Still image: no graphics hardware the scene can use here.';
     if (toggle) toggle.hidden = true;
     return;
   }
@@ -241,7 +249,7 @@ export async function startScene(root) {
   document.addEventListener('visibilitychange', () => { if (!document.hidden && !paused) kick(); });
 
   /* the loop */
-  let raf = 0, last = 0, slow = 0, frames = 0;
+  let raf = 0, last = 0, slow = 0, crawl = 0, frames = 0, stopped = false, floor = false;
   const frame = (now) => {
     raf = 0;
     const dt = last ? Math.min(0.05, (now - last) / 1000) : 1 / 60;
@@ -249,11 +257,16 @@ export async function startScene(root) {
     step(dt);
     if (frames > 30 && dt > 0.026) slow++; else slow = Math.max(0, slow - 1);
     if (slow > 45 && state.quality > 0.55) { state.quality *= 0.8; slow = 0; resize(); }
-    if (slow > 45 && state.quality <= 0.55 && renderer.reduce && renderer.reduce()) { slow = 0; describe(); }
+    if (slow > 45 && state.quality <= 0.55) {
+      if (renderer.reduce && renderer.reduce()) { slow = 0; describe(); } else floor = true;
+    }
+    if (frames > 30 && dt > 0.05) crawl++; else crawl = Math.max(0, crawl - 1);
     frames++;
+    // under ~20 fps even at the lowest settings: stop and keep the still image, so the page stays responsive
+    if (floor && crawl > 120 && !force) { giveUp('Still image: this device draws the scene too slowly.'); return; }
     if (!paused && onScreen && !document.hidden) raf = requestAnimationFrame(frame);
   };
-  const kick = () => { if (!raf) { last = 0; raf = requestAnimationFrame(frame); } };
+  const kick = () => { if (!raf && !stopped) { last = 0; raf = requestAnimationFrame(frame); } };
 
   function step(dt) {
     state.time += paused ? 0 : dt;
@@ -263,6 +276,7 @@ export async function startScene(root) {
     if (reduced.matches) state.parallax = [0, 0];
     state.hour = fixedHour ?? state.progress;
     state.flare = Math.max(0, state.flare - dt * 0.25);
+    state.focus[1] += (state.focusTarget - state.focus[1]) * Math.min(1, (dt || 0.016) * 5);
     const cam = camera(state, cssW, cssH, renderer.zeroToOne);
     let strength = 0;
     if (state.pointerNdc && !reduced.matches) {
@@ -273,7 +287,13 @@ export async function startScene(root) {
     renderer.render(cam, dt, paused);
     if (!root.classList.contains('is-live')) root.classList.add('is-live');
   }
-  function drawOnce() { requestAnimationFrame(() => step(0)); }
+  function drawOnce() { if (!stopped) requestAnimationFrame(() => step(0)); }
+  function giveUp(msg) {
+    cancelAnimationFrame(raf); raf = 0; paused = true; stopped = true;
+    root.classList.remove('is-live');
+    if (status) status.textContent = msg;
+    if (toggle) toggle.hidden = true;
+  }
 
   const setPaused = (v, remember) => {
     paused = v;
@@ -288,6 +308,14 @@ export async function startScene(root) {
   };
   toggle?.addEventListener('click', () => setPaused(!paused, true));
   setPaused(paused, false);
+
+  // work entries are fires on the road: hovering or focusing one lights its stretch of the procession
+  for (const el of document.querySelectorAll('[data-climb]')) {
+    const on = () => { state.focus[0] = Number(el.dataset.climb); state.focusTarget = 1; if (paused) { state.focus[1] = 1; drawOnce(); } };
+    const off = () => { state.focusTarget = 0; if (paused) { state.focus[1] = 0; drawOnce(); } };
+    el.addEventListener('pointerenter', on); el.addEventListener('focus', on);
+    el.addEventListener('pointerleave', off); el.addEventListener('blur', off);
+  }
 
   // the case study's hour slider
   const hourInput = document.querySelector('[data-scene-hour]');

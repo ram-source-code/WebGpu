@@ -81,7 +81,7 @@ main:focus { outline: none; }
 }
 .skip {
   position: absolute; z-index: 20; inset-block-start: 0.75rem; inset-inline-start: 0.75rem;
-  padding: 0.75rem 1rem; background: var(--saffron); color: var(--night); font-weight: 700; border-radius: 0.4rem;
+  padding: 0.75rem 1rem; background: var(--saffron); color: var(--night); font-weight: 700; border-radius: 0.5rem;
   translate: 0 -200%;
 }
 .skip:focus-visible { translate: 0 0; outline-color: var(--limestone); }
@@ -90,10 +90,13 @@ main:focus { outline: none; }
 
 /* placeholder for content only the owner can supply */
 .client-slot {
-  display: inline; padding: 0.3em 0.65em; border: 1px dashed currentColor; border-radius: 0.3em; line-height: 2.2;
+  display: inline-block; max-inline-size: 100%; padding: 0.3em 0.65em; border: 1px dashed currentColor; border-radius: 0.3em; line-height: 2.2;
   font-family: var(--text); font-size: min(0.82em, 1.15rem); font-weight: 500; font-stretch: 100%; letter-spacing: 0;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
+
+.client-block { display: grid; gap: 0.2rem; padding: 0.7rem 0.9rem; border: 1px dashed currentColor; border-radius: 0.5rem; font-size: 0.9rem; max-inline-size: 36rem; }
+.client-block__label { font-weight: 700; }
 
 /* ---------- the scene ---------- */
 
@@ -121,29 +124,27 @@ main:focus { outline: none; }
 .hour { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--limestone); font-weight: 600; }
 .hour input { inline-size: min(14rem, 40vw); accent-color: var(--ember); min-height: 44px; }
 
-/* the hour rail: where you are in the night (decorative) */
-.altitude { display: none; }
-@media (min-width: 80rem) {
-  .altitude {
-    position: fixed; z-index: 3; inset-inline-end: 1.25rem; inset-block-start: 50%; translate: 0 -50%;
-    display: flex; flex-direction: column; justify-content: space-between; block-size: 40vh;
-    padding: 0.6rem 1rem 0.6rem 0.75rem; border-radius: 0.6rem;
-    background: oklch(0.2 0.055 272 / 0.6); color: var(--haze); font-size: 0.75rem; line-height: 1.2; text-align: end;
-  }
-  .altitude::after {
-    content: ""; position: absolute; inset-block: 0.9rem; inset-inline-end: 0.45rem; inline-size: 1px; background: oklch(0.82 0.035 272 / 0.45);
-  }
-  .altitude__mark {
-    position: absolute; inset-inline-end: calc(0.45rem - 4px); inset-block-start: 0.9rem; inline-size: 9px; block-size: 9px;
-    border-radius: 50%; background: var(--ember);
-  }
-  @supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
-    @media (prefers-reduced-motion: no-preference) {
-      .altitude__mark { animation: climb linear both; animation-timeline: scroll(root); }
-    }
+/* the hour rail: where you are in the night (decorative), a track and a mark at the inline end */
+.altitude {
+  position: fixed; z-index: 3; inset-inline-end: 0.35rem; inset-block-start: 50%; translate: 0 -50%;
+  display: flex; flex-direction: column; justify-content: space-between; block-size: 40vh;
+  padding-inline-end: 0.9rem; pointer-events: none;
+  color: var(--limestone); font-size: 0.875rem; line-height: 1; text-align: end;
+}
+.altitude span:not(.altitude__mark), .altitude::after { mix-blend-mode: difference; }
+.altitude span:not(.altitude__mark) { display: none; }
+.altitude::after { content: ""; position: absolute; inset-block: 0; inset-inline-end: 0.3rem; inline-size: 1px; background: var(--limestone); opacity: 0.7; }
+.altitude__mark {
+  position: absolute; inset-inline-end: calc(0.3rem - 4px); inset-block-start: 0; inline-size: 9px; block-size: 9px;
+  border-radius: 50%; background: var(--ember); box-shadow: 0 1px 3px oklch(0.1 0.04 272 / 0.6);
+}
+@media (min-width: 80rem) { .altitude { inset-inline-end: 1rem; } .altitude span:not(.altitude__mark) { display: block; } }
+@supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
+  @media (prefers-reduced-motion: no-preference) {
+    .altitude__mark { animation: climb linear both; animation-timeline: scroll(root); }
   }
 }
-@keyframes climb { to { translate: 0 calc(40vh - 1.8rem - 9px); background: var(--saffron); } }
+@keyframes climb { to { translate: 0 calc(40vh - 9px); background: var(--saffron); } }
 
 /* ---------- header ---------- */
 
@@ -211,6 +212,7 @@ main:focus { outline: none; }
 .ground--night { --bg: var(--night); --fg: var(--limestone); --muted: var(--haze); --accent: var(--saffron); --line: oklch(0.82 0.035 272 / 0.28); --focus: var(--saffron); }
 .ground--ember { --bg: var(--ember); --fg: var(--ink); --muted: var(--ember-muted); --accent: var(--ink); --line: oklch(0.22 0.06 272 / 0.3); --focus: var(--ink); color-scheme: light; }
 .ground--dawn { --bg: var(--limestone); --fg: var(--ink); --muted: var(--ink-soft); --accent: var(--ember-deep); --line: oklch(0.22 0.06 272 / 0.18); --focus: var(--ink); color-scheme: light; }
+.ground--see { --bg: oklch(0.2 0.055 272 / 0.8); }
 .ground :focus-visible { outline-color: var(--focus); }
 .ridge-top { margin-block-start: var(--ridge-h); }
 .ridge-top::before {
@@ -219,8 +221,14 @@ main:focus { outline: none; }
   -webkit-mask: url("../img/ridge.svg") center bottom / 100% 100% no-repeat;
   mask: url("../img/ridge.svg") center bottom / 100% 100% no-repeat;
 }
-.window { display: grid; align-content: end; block-size: 58svh; padding: 0 var(--gutter) calc(var(--ridge-h) + 1.5rem); }
-.window--dawn { block-size: 46svh; }
+.ridge-bottom::after {
+  content: ""; position: absolute; inset-inline: 0; inset-block-start: calc(100% - 1px); block-size: var(--ridge-h);
+  background: var(--bg); scale: 1 -1;
+  -webkit-mask: url("../img/ridge.svg") center bottom / 100% 100% no-repeat;
+  mask: url("../img/ridge.svg") center bottom / 100% 100% no-repeat;
+}
+.window { display: grid; align-content: end; block-size: calc(50svh + var(--ridge-h)); padding: var(--ridge-h) var(--gutter) calc(var(--ridge-h) + 1.5rem); }
+.window--dawn { block-size: calc(42svh + var(--ridge-h)); }
 .window__caption {
   margin: 0; inline-size: fit-content; max-inline-size: 30ch; padding: 0.5rem 0.85rem; border-radius: 0.5rem;
   background: oklch(0.2 0.055 272 / 0.62); color: var(--limestone); font-family: var(--display); font-stretch: 75%; font-weight: 700; font-size: 1.15rem; line-height: 1.25;
@@ -264,14 +272,16 @@ main:focus { outline: none; }
   -webkit-mask: url("../img/arrow.svg") center / contain no-repeat; mask: url("../img/arrow.svg") center / contain no-repeat;
   transition: translate 0.3s var(--ease-out), opacity 0.2s;
 }
-.climb__link:hover { background: oklch(0.29 0.075 272 / 0.5); }
+.climb__link:is(:hover, :focus-visible) { background: oklch(0.29 0.075 272 / 0.5); }
+.climb__link:is(:hover, :focus-visible)::before { background: var(--saffron); }
 .climb__link:hover::after { translate: 0.3rem 0; opacity: 1; }
 .climb__link:hover .climb__title { color: var(--saffron); }
 .climb__title {
   font-family: var(--display); font-stretch: 70%; font-weight: 760; font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.9rem);
   line-height: 1; transition: color 0.2s;
 }
-.climb__meta { color: var(--muted); font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+.climb__item--slot .climb__title { opacity: 0.75; }
+.climb__meta { color: var(--muted); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
 .climb__summary { max-inline-size: 36rem; }
 .climb__stack { color: var(--muted); font-size: 0.9rem; }
 .climb__item--slot .climb__link::before { background: transparent; border: 1.5px dashed var(--ember); }
@@ -283,10 +293,10 @@ main:focus { outline: none; }
 /* dawn close */
 .close { display: grid; justify-items: start; gap: 1rem; }
 .close__title {
-  font-family: var(--display); font-stretch: 64%; font-weight: 820; font-size: clamp(2.8rem, 1.4rem + 6vw, 6rem);
+  font-family: var(--display); font-stretch: 64%; font-weight: 820; font-size: clamp(2.9rem, 1.6rem + 6vw, 6rem);
   line-height: 0.9; max-inline-size: 12ch;
 }
-.close__lede { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem); max-inline-size: 40ch; margin: 0; }
+.close__lede { font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem); max-inline-size: 40ch; margin: 0; }
 .close__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-block-start: 1rem; }
 
 /* ---------- inner pages: the band ---------- */
@@ -304,7 +314,7 @@ main:focus { outline: none; }
   font-family: var(--display); font-stretch: 64%; font-weight: 820; font-size: clamp(2.9rem, 1.6rem + 6vw, 6rem);
   line-height: 0.9; color: var(--limestone);
 }
-.band__lede { margin: 0.9rem 0 0; font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem); max-inline-size: 44ch; color: var(--limestone); }
+.band__lede { margin: 0.9rem 0 0; font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem); max-inline-size: 44ch; color: var(--limestone); }
 .band .scene-bar { padding-block-start: 1.25rem; }
 
 .page-head { padding-block-start: 8rem; }
@@ -321,7 +331,7 @@ main:focus { outline: none; }
 .steps li { counter-increment: step; position: relative; padding-inline-start: 2.6rem; margin-block-end: 1.1em; }
 .steps li::before {
   content: counter(step); position: absolute; inset-inline-start: 0; inset-block-start: -0.1em;
-  font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: 1.6rem; line-height: 1; color: var(--ember);
+  font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); line-height: 1; color: var(--ember);
 }
 .tiers { list-style: none; padding: 0 !important; }
 .tiers li { display: grid; gap: 0.1rem; padding-block: 0.75rem; border-block-start: 1px solid var(--line); }
@@ -336,7 +346,7 @@ main:focus { outline: none; }
 .next__label { color: var(--muted); font-weight: 600; }
 .next__title {
   display: inline-flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
-  font-family: var(--display); font-stretch: 66%; font-weight: 800; font-size: clamp(2rem, 1.3rem + 3.4vw, 3.8rem); line-height: 1;
+  font-family: var(--display); font-stretch: 66%; font-weight: 800; font-size: clamp(2.3rem, 1.4rem + 3.6vw, 4rem); line-height: 1;
 }
 .next__link:hover .next__title { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 0.12em; }
 
@@ -358,16 +368,15 @@ main:focus { outline: none; }
 .field input:hover, .field textarea:hover { border-color: var(--ink); }
 .field input:focus-visible, .field textarea:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .field :is(input, textarea):is(:user-invalid, [aria-invalid="true"]) { border-color: var(--error); border-width: 2px; }
-.field__error { margin: 0; color: var(--error); font-weight: 600; font-size: 0.95rem; }
-.field__error::before { content: "! "; font-weight: 800; }
+.field__error { margin: 0; color: var(--error); font-weight: 600; font-size: 0.875rem; }
 .field:has(:user-invalid) .field__error[hidden] { display: block !important; }
 .hp { position: absolute; inset-inline-start: -10000px; inline-size: 1px; block-size: 1px; overflow: hidden; }
-.form__summary { padding: 1rem 1.2rem; border: 2px solid var(--error); border-radius: 0.6rem; background: oklch(0.97 0.02 40); }
+.form__summary { padding: 1rem 1.2rem; border: 2px solid var(--error); border-radius: 0.6rem; background: var(--limestone); }
 .form__summary p { margin: 0 0 0.4rem; font-weight: 700; }
 .form__summary ul { margin: 0; padding-inline-start: 1.2rem; }
 .form__summary a { color: var(--error); font-weight: 600; }
-.form__note { margin: 0; color: var(--muted); font-size: 0.95rem; }
-.sent__title { font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: clamp(1.9rem, 1.4rem + 2vw, 2.8rem); line-height: 1; margin-block-end: 0.75rem; }
+.form__note { margin: 0; color: var(--muted); font-size: 0.875rem; }
+.sent__title { font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.9rem); line-height: 1; margin-block-end: 0.75rem; }
 
 /* ---------- footer ---------- */
 
@@ -385,7 +394,7 @@ main:focus { outline: none; }
 /* ---------- error pages ---------- */
 
 .err__code { margin: 0; font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: 1.4rem; color: var(--ember); }
-.err__title { font-family: var(--display); font-stretch: 64%; font-weight: 820; font-size: clamp(2.6rem, 1.6rem + 5vw, 5rem); line-height: 0.92; max-inline-size: 14ch; }
+.err__title { font-family: var(--display); font-stretch: 64%; font-weight: 820; font-size: clamp(2.9rem, 1.6rem + 6vw, 6rem); line-height: 0.92; max-inline-size: 14ch; }
 .err__text { max-inline-size: 48ch; font-size: 1.15rem; }
 
 /* ---------- motion between pages ---------- */
@@ -405,8 +414,8 @@ main:focus { outline: none; }
 
 @media print {
   .scene, .scene-bar, .altitude, .window, .site-nav, .skip { display: none !important; }
-  .ground, body { background: #fff !important; color: #000 !important; }
+  .ground, body { background: var(--limestone) !important; color: var(--ink) !important; }
   .band { min-block-size: 0; padding: 0; }
   .band::before, .band::after, .ridge-top::before { display: none; }
-  .band__title, .band__lede { color: #000; }
+  .band__title, .band__lede { color: var(--ink); }
 }
