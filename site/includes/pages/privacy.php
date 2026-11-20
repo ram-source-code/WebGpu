@@ -13,7 +13,7 @@
       <p>Only what you type into the contact form: your name, your email address and your message. They are used for one thing: replying to you.</p>
       <p>Reading the site sets no cookies and runs no analytics, ads or tracking. If you pause the 3D scene, your browser remembers that choice in its own storage on your device; nothing is sent anywhere.</p>
       <h2>Who receives it</h2>
-      <p>Messages are stored in a database on this site’s web host, and may be forwarded to my own inbox by email so I see them quickly. Nobody else receives them. Nothing is sold or shared.</p>
+      <p>Messages are stored in a database on this site’s web host and sent to my own email inbox so I see them quickly. Nobody else receives them. Nothing is sold or shared.</p>
       <p>The server keeps short-lived records to stop spam: the time of each form submission and a scrambled form of your network address that cannot be turned back into the address. They are deleted after 24 hours.</p>
       <h2>How long it is kept</h2>
       <p>Messages are kept for up to 12 months, then deleted automatically.</p>

@@ -56,7 +56,7 @@ The readable scripts live in `src/js/` (outside `site/`, never uploaded):
 
 - Projects: `includes/content.php`. Set `placeholder` to `false` and fill `title`, `year`, `role`, `summary`, `stack` once a project is real. A placeholder project is `noindex` and stays out of the sitemap. Its case-study body is in the placeholder branch of `includes/pages/project.php`.
 - Copy: `includes/pages/*.php`. Every `client('…')` call renders a visible `[CLIENT: …]` slot; search for `client(` to find them all.
-- Contact email shown on the site: `CONTACT_EMAIL` in an optional `.env` (none by default: the site shows the contact form only).
+- Contact details (email, phone/WhatsApp, Facebook): defaults in `SETTING_DEFAULTS` in `includes/functions.php`; an optional `.env` overrides them. They appear in the contact blocks (`includes/partials/reach.php`), the footer and the Person JSON-LD.
 
 ## Contact messages (no admin panel by design)
 
@@ -70,7 +70,7 @@ php includes/cli/messages.php backup                      # VACUUM INTO data/bac
 ```
 
 On shared hosting without SSH, run them through hPanel's cron ("run once") or ask for a copy of `data/site.sqlite` via the File Manager *after* a `backup` (never copy the live file).
-Email notifications: fill the `SMTP_*` and `MAIL_*` keys. Leave `SMTP_HOST = ""` to only save messages. If SMTP fails, the message is still saved (`mailed = 0`).
+Email notifications: every message is also emailed to `CONTACT_EMAIL` (or `MAIL_TO`) with the host's built-in `mail()`, from `website@<your domain>`. For better delivery, fill the `SMTP_*` keys from your host's email account. If sending fails the message is still saved (`mailed = 0`); on localhost nothing is sent.
 Messages older than 12 months are deleted automatically on each new message (privacy page promise).
 
 ## Deploy (Hostinger / any Apache or LiteSpeed host)

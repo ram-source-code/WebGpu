@@ -1,6 +1,6 @@
 <?php
 $band = ['id' => 'about-title', 'title' => 'About', 'hour' => '0.3', 'progress' => '0.25', 'poster' => 'dusk',
-         'lede' => client('one line: who you are and what you make')];
+         'lede' => 'I make business owners’ dreams come true.'];
 require ROOT . '/includes/partials/scene-band.php';
 ?>
 <section class="ground ground--ember" aria-labelledby="bio-title">
@@ -10,26 +10,25 @@ require ROOT . '/includes/partials/scene-band.php';
       <figure class="portrait">
         <div class="portrait__slot"><?= client('portrait photo, 4:5, your own') ?></div>
       </figure>
-      <p><?= client('who you are and where you work from, two sentences') ?></p>
-      <p><?= client('what you build and for whom, two or three sentences') ?></p>
-      <p><?= client('how you like to work with people: availability, languages, time zone') ?></p>
+      <p>I am Ramyar Salah. I build the software a business runs on: websites, desktop apps, admin utilities and custom business software, made for the way each owner actually works.</p>
+      <p>I hold a Bachelor’s degree in IT. I also care about how things look: my designs are modern and current, never stuck in old, legacy styles.</p>
+      <p>If you have an idea for your business, a website you are not proud of, or a job your team still does by hand, I would like to hear about it.</p>
     </div>
   </div>
 </section>
-<section class="ground ground--night" aria-labelledby="site-title">
+<section class="ground ground--night" aria-labelledby="reach-title">
   <div class="wrap split">
-    <h2 id="site-title" class="section-title">About this site</h2>
-    <div class="prose">
-      <p>The look of this site comes from Newroz, from fires carried up the Zagros mountains on the eve of the new year, not from a template.</p>
-      <p>It is made to work for everyone: it reads on an old phone and a weak connection, with or without motion, and with the keyboard alone.</p>
-      <p><a class="link-arrow" href="<?= e(url('/work/newroz-on-the-ridge')) ?>">See the night scene<?= icon('arrow') ?></a></p>
+    <h2 id="reach-title" class="section-title">Reach me</h2>
+    <div>
+<?php $reachCopy = true; require ROOT . '/includes/partials/reach.php'; ?>
+      <p class="reach__form">Or <a href="<?= e(url('/contact')) ?>">send a message from the site</a>.</p>
     </div>
   </div>
 </section>
 <?php
 return [
     'title' => 'About',
-    'description' => 'About Ramyar Salah, and the Newroz night that this site is made from.',
+    'description' => 'Ramyar Salah builds websites, desktop apps, admin utilities and custom business software for business owners. Bachelor’s degree in IT, modern design.',
     'path' => '/about',
     'scene' => 'band',
     'current' => '/about',

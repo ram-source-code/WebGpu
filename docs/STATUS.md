@@ -2,6 +2,13 @@
 
 Dev-only report (spec Part F). Built unattended on 20 Nov 2026. Statuses: ✅ ran it and saw the result · N/A with reason · `DEV` the developer must run it · ❌ failed (see Known issues).
 
+## Update 20 Nov 2026: owner's real details
+
+- From the owner: phone/WhatsApp 0770 083 5557 (`tel:+9647700835557`, `wa.me/9647700835557`), email ramyar.techie@gmail.com, Facebook link, Bachelor's degree in IT, builds websites, desktop apps, admin utilities and custom business software for business owners, modern design taste. Used in the hero, a new "What I make" section, About, Contact, footer, Person JSON-LD (telephone, email, sameAs) and the link-preview image.
+- Form messages are now emailed to the owner with zero setup (host `mail()`, SMTP optional) and still saved first.
+- Still placeholders: portrait photo, two project slots.
+- Checked: detector 0, axe clean, 21/21 browser tests.
+
 ## Update 20 Nov 2026: smoothness pass and no build details on the page
 
 - Visible content no longer says how the site is made: no technology names in copy, titles, descriptions, the link-preview image or the scene controls (status line removed); no console messages or debug hooks; script files renamed and shipped minified from `src/js` (`tools/build-js.sh`). The browser APIs the scene needs (`getContext('webgpu')`, `'webgl2'`) cannot be hidden from someone reading the code.

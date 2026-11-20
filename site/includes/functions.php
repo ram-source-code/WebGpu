@@ -89,7 +89,9 @@ function route(array $routes, string $method, string $path): array
 const SETTING_DEFAULTS = [
     'SITE_NAME' => 'Ramyar Salah',
     'CANONICAL_HOST' => '',      // empty: use the host the site is served from
-    'CONTACT_EMAIL' => '',       // empty: the site shows only the contact form
+    'CONTACT_EMAIL' => 'ramyar.techie@gmail.com',      // shown on the site; receives form messages
+    'CONTACT_PHONE' => '+9647700835557',               // E.164; also the WhatsApp number
+    'FACEBOOK_URL'  => 'https://www.facebook.com/share/1JKBxYyGV9/',
     'SMTP_HOST' => '', 'SMTP_PORT' => '587', 'SMTP_USER' => '', 'SMTP_PASS' => '', 'MAIL_FROM' => '', 'MAIL_TO' => '',
 ];
 
@@ -298,7 +300,43 @@ function lastmod(string ...$files): string
     return date('c', $t ?: time());
 }
 
-/* ---------- mail (optional SMTP notification; the form saves even if this fails) ---------- */
+/* ---------- phone ---------- */
+
+/** +9647700835557 -> 0770 083 5557 (Iraqi mobile display form) */
+function phone_local(string $e164): string
+{
+    $n = '0' . substr($e164, 4);
+    return substr($n, 0, 4) . ' ' . substr($n, 4, 3) . ' ' . substr($n, 7);
+}
+function whatsapp_url(string $e164): string
+{
+    return 'https://wa.me/' . ltrim($e164, '+');
+}
+
+/* ---------- mail: SMTP when configured, else the host's mail(); the form saves even if both fail ---------- */
+
+function notify_owner(string $subject, string $body, string $replyTo): bool
+{
+    if (SMTP_HOST !== '') return smtp_send($subject, $body, $replyTo);
+    $to = MAIL_TO !== '' ? MAIL_TO : CONTACT_EMAIL;
+    $host = preg_replace('/^www\./', '', explode(':', site_host())[0]);
+    // no mail server on a development machine; shared hosts (Hostinger, cPanel) provide mail()
+    if ($to === '' || ENV === 'local' || $host === 'localhost' || !str_contains($host, '.') || !function_exists('mail')) return false;
+    $strip = fn(string $s): string => str_replace(["\r", "\n"], ' ', $s);
+    $from = MAIL_FROM !== '' ? MAIL_FROM : 'website@' . $host;
+    $headers = [
+        'From: ' . $strip(SITE_NAME) . ' website <' . $strip($from) . '>',
+        'Reply-To: <' . $strip($replyTo) . '>',
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding: base64',
+    ];
+    $ok = @mail($strip($to), '=?UTF-8?B?' . base64_encode($strip($subject)) . '?=', chunk_split(base64_encode($body)), implode("\r\n", $headers));
+    if (!$ok) error_log('mail(): message not handed to the mail server');
+    return $ok;
+}
+
+/* ---------- SMTP ---------- */
 
 function smtp_send(string $subject, string $body, string $replyTo): bool
 {

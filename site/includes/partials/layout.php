@@ -10,8 +10,11 @@ $person = [
     '@type' => 'Person',
     'name' => 'Ramyar Salah',
     'url' => abs_url('/'),
-    'sameAs' => ['https://github.com/ram-source-code'],
+    'description' => 'Builds websites, desktop apps, admin utilities and custom business software for business owners.',
+    'sameAs' => array_values(array_filter([FACEBOOK_URL, 'https://github.com/ram-source-code'])),
 ];
+if (CONTACT_PHONE !== '') $person['telephone'] = CONTACT_PHONE;
+if (CONTACT_EMAIL !== '') $person['email'] = 'mailto:' . CONTACT_EMAIL;
 $ld = $meta['jsonld'] ?? [$person];
 // data saver on (Save-Data header) or ?still: keep the still image, skip the scene's JavaScript
 $sceneJs = !empty($meta['scene']) && strtolower($_SERVER['HTTP_SAVE_DATA'] ?? '') !== 'on' && !isset($_GET['still']);
@@ -93,6 +96,12 @@ if (!empty($meta['scene'])) header('Vary: Save-Data');
   <div class="site-footer__inner">
     <p class="site-footer__ask">Have something to build? <a href="<?= e(url('/contact')) ?>">Get in touch</a></p>
     <ul class="site-footer__links">
+<?php if (CONTACT_PHONE !== ''): ?>
+      <li><a href="<?= e(whatsapp_url(CONTACT_PHONE)) ?>" rel="noopener noreferrer" target="_blank">WhatsApp <span dir="ltr"><?= e(phone_local(CONTACT_PHONE)) ?></span><?= icon('external') ?><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+<?php endif ?>
+<?php if (FACEBOOK_URL !== ''): ?>
+      <li><a href="<?= e(FACEBOOK_URL) ?>" rel="noopener noreferrer" target="_blank">Facebook<?= icon('external') ?><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+<?php endif ?>
       <li><a href="https://github.com/ram-source-code" rel="noopener noreferrer" target="_blank">GitHub<?= icon('external') ?><span class="visually-hidden"> (opens in a new tab)</span></a></li>
       <li><a href="<?= e(url('/privacy')) ?>"<?= $current === '/privacy' ? ' aria-current="page"' : '' ?>>Privacy</a></li>
     </ul>

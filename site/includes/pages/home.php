@@ -4,7 +4,7 @@ $work = projects();
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero__copy">
     <h1 id="hero-title" class="hero__name"><span>Ramyar</span> <span>Salah</span></h1>
-    <p class="hero__lede">Websites that move, made to feel light.</p>
+    <p class="hero__lede">I make business owners’ dreams come true: websites, desktop apps and custom business software.</p>
     <div class="hero__actions">
       <a class="button button--fire" href="<?= e(url('/contact')) ?>">Get in touch<?= icon('arrow') ?></a>
       <a class="link-quiet" href="#work">See the work</a>
@@ -45,14 +45,20 @@ $work = projects();
 
 <div class="window"><p class="window__caption">Midnight. The line reaches the summit.</p></div>
 
-<section class="ground ground--ember ridge-top ridge-bottom" aria-labelledby="about-title">
+<section class="ground ground--ember ridge-top ridge-bottom" aria-labelledby="make-title">
   <div class="wrap split">
-    <h2 id="about-title" class="section-title">Why a mountain on fire</h2>
-    <div class="prose">
-      <p>On the night before Newroz, the Kurdish new year, fires are lit on the mountains, and in towns like Akre people carry torches up the hillside until the whole slope is a moving line of light.</p>
-      <p>This site rebuilds that night. Every point of light is a walker with a place in the line, a little wind, and a tendency to step toward you. Move your pointer, or touch the ridge, and the closest walkers turn your way.</p>
-      <p><?= client('two or three sentences about you: where you work from, what you like to build, who you build it for') ?></p>
-      <p><a class="link-arrow" href="<?= e(url('/about')) ?>">More about Ramyar<?= icon('arrow') ?></a></p>
+    <div>
+      <h2 id="make-title" class="section-title">What I make</h2>
+      <p class="make__intro">For business owners who want software that fits the way they work, and looks like it was made this year.</p>
+    </div>
+    <div>
+      <ul class="make">
+        <li><span class="make__name">Websites</span> Modern, fast sites with a design that looks current, not left behind.</li>
+        <li><span class="make__name">Desktop apps</span> Software that runs on your own computers, in your office or shop.</li>
+        <li><span class="make__name">Admin utilities</span> Custom tools for the jobs behind the scenes: managing records, users and daily tasks.</li>
+        <li><span class="make__name">Custom business software</span> Built around how your business actually runs, instead of bending your business to fit a product.</li>
+      </ul>
+      <p class="make__more">Bachelor’s degree in IT. <a class="link-arrow" href="<?= e(url('/about')) ?>">More about Ramyar<?= icon('arrow') ?></a></p>
     </div>
   </div>
 </section>
@@ -62,21 +68,17 @@ $work = projects();
 <section class="ground ground--dawn ridge-top" aria-labelledby="close-title">
   <div class="wrap close">
     <h2 id="close-title" class="close__title">Light the next fire</h2>
-    <p class="close__lede">Have something in mind? Tell me about it.</p>
+    <p class="close__lede">Tell me about your business and what you want it to do. Message me here, or call or WhatsApp.</p>
     <div class="close__actions">
       <a class="button button--ink" href="<?= e(url('/contact')) ?>">Write a message<?= icon('arrow') ?></a>
-<?php if (CONTACT_EMAIL !== ''): ?>
-      <button class="button button--line" type="button" data-copy="<?= e(CONTACT_EMAIL) ?>" hidden><?= icon('copy') ?><span data-copy-label>Copy email address</span></button>
-      <a class="link-quiet" href="mailto:<?= e(CONTACT_EMAIL) ?>"><?= e(CONTACT_EMAIL) ?></a>
-<?php endif ?>
     </div>
-    <p class="visually-hidden" aria-live="polite" data-copy-status></p>
+<?php $reachCopy = true; require ROOT . '/includes/partials/reach.php'; ?>
   </div>
 </section>
 <?php
 return [
-    'title' => 'Ramyar Salah · Portfolio',
-    'description' => 'Portfolio of Ramyar Salah. The site opens on a live Newroz night: a torch procession climbing a Zagros ridge to a summit fire.',
+    'title' => 'Ramyar Salah · Websites, desktop apps and business software',
+    'description' => 'Ramyar Salah builds websites, desktop apps, admin utilities and custom business software for business owners, with a modern design eye. Call or WhatsApp 0770 083 5557.',
     'path' => '/',
     'scene' => 'full',
     'current' => '/',
