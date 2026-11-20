@@ -80,15 +80,19 @@ $field = function (string $k) use ($errors): string {
 <section class="ground ground--dawn" aria-label="<?= $sent ? 'What happens next' : 'Contact form' ?>">
   <div class="wrap split">
     <div class="contact-aside">
+<?php if (CONTACT_EMAIL !== ''): ?>
       <p>Prefer email?</p>
       <p><a class="link-arrow" href="mailto:<?= e(CONTACT_EMAIL) ?>"><?= e(CONTACT_EMAIL) ?></a></p>
       <button class="button button--line" type="button" data-copy="<?= e(CONTACT_EMAIL) ?>" hidden><?= icon('copy') ?><span data-copy-label>Copy email address</span></button>
       <p class="visually-hidden" aria-live="polite" data-copy-status></p>
+<?php else: ?>
+      <p>A few lines are enough: what you are building, for whom, and when you need it.</p>
+<?php endif ?>
     </div>
 <?php if ($sent): ?>
     <div class="sent" data-flare>
       <p class="sent__title">Your message is on its way.</p>
-      <p>It is saved and I will answer at the email address you gave. If it is urgent, write to <a href="mailto:<?= e(CONTACT_EMAIL) ?>"><?= e(CONTACT_EMAIL) ?></a> directly.</p>
+      <p>It is saved and I will answer at the email address you gave.<?php if (CONTACT_EMAIL !== ''): ?> If it is urgent, write to <a href="mailto:<?= e(CONTACT_EMAIL) ?>"><?= e(CONTACT_EMAIL) ?></a> directly.<?php endif ?></p>
       <p><a class="link-arrow" href="<?= e(url('/work')) ?>">Back to the work<?= icon('arrow') ?></a></p>
     </div>
 <?php else: ?>

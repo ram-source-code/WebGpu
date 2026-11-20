@@ -44,7 +44,8 @@ function url(string $path = '/', array $query = []): string
 
 function abs_url(string $path = '/', array $query = []): string
 {
-    return (ENV === 'local' ? 'http://' : 'https://') . CANONICAL_HOST . url($path, $query);
+    $https = CANONICAL_HOST !== '' && ENV !== 'local' ? true : is_https();
+    return ($https ? 'https://' : 'http://') . site_host() . url($path, $query);
 }
 
 function asset(string $p): string
@@ -81,26 +82,76 @@ function route(array $routes, string $method, string $path): array
 
 /* ---------- .env (spec E.j) ---------- */
 
+/**
+ * Settings. Everything is optional so the folder works the moment it is uploaded:
+ * a .env file (see .env.example) only overrides these defaults. Returns 'local' or 'production'.
+ */
+const SETTING_DEFAULTS = [
+    'SITE_NAME' => 'Ramyar Salah',
+    'CANONICAL_HOST' => '',      // empty: use the host the site is served from
+    'CONTACT_EMAIL' => '',       // empty: the site shows only the contact form
+    'SMTP_HOST' => '', 'SMTP_PORT' => '587', 'SMTP_USER' => '', 'SMTP_PASS' => '', 'MAIL_FROM' => '', 'MAIL_TO' => '',
+];
+
 function load_env(string $file): string
 {
-    $ini = is_file($file) ? parse_ini_file($file, true, INI_SCANNER_RAW) : false;
-    if (!$ini || !isset($ini['production'])) throw new RuntimeException('.env is missing, unreadable or has no [production]');
-    $here = strtolower(str_replace('\\', '/', ROOT)) . '/';
     $name = 'production';
-    foreach ($ini as $section => $keys) {
-        if (!is_array($keys) || !isset($keys['when'])) continue;
-        foreach (explode(',', strtolower($keys['when'])) as $glob) {
-            if (fnmatch(trim($glob), $here)) { $name = (string)$section; break 2; }
+    $values = [];
+    if (is_file($file)) {
+        $ini = parse_ini_file($file, true, INI_SCANNER_RAW);
+        if ($ini === false) throw new RuntimeException('.env is unreadable');
+        $here = strtolower(str_replace('\\', '/', ROOT)) . '/';
+        foreach ($ini as $section => $keys) {
+            if (!is_array($keys) || !isset($keys['when'])) continue;
+            foreach (explode(',', strtolower($keys['when'])) as $glob) {
+                if (fnmatch(trim($glob), $here)) { $name = (string)$section; break 2; }
+            }
+        }
+        $values = ($ini[$name] ?? []) + array_filter($ini, 'is_string');
+        unset($values['when']);
+    }
+    foreach ($values as $key => $value) {
+        if (!preg_match('/^[A-Z][A-Z0-9_]*$/', (string)$key) || str_contains((string)$value, '[CLIENT:')) {
+            throw new RuntimeException(".env [$name] $key: bad name, or still a placeholder");   // the key, never the value
         }
     }
-    foreach ($ini[$name] + array_filter($ini, 'is_string') as $key => $value) {
-        if ($key === 'when') continue;
-        if (!preg_match('/^[A-Z][A-Z0-9_]*$/', (string)$key) || defined($key) || str_contains((string)$value, '[CLIENT:')) {
-            throw new RuntimeException(".env [$name] $key: bad or taken name, or still a placeholder");
+    foreach ($values + SETTING_DEFAULTS as $key => $value) defined($key) || define((string)$key, (string)$value);
+    // secret keys: from .env if given, otherwise generated once and kept in data/ (blocked from the web)
+    $keys = null;
+    if (!isset($values['FORM_KEY'], $values['MAINT_KEY'])) {
+        $kf = ROOT . '/data/keys.php';
+        $keys = is_file($kf) ? include $kf : null;
+        if (!is_array($keys) || empty($keys['FORM_KEY']) || empty($keys['MAINT_KEY'])) {
+            $keys = ['FORM_KEY' => bin2hex(random_bytes(32)), 'MAINT_KEY' => bin2hex(random_bytes(16))];
+            $tmp = $kf . '.' . bin2hex(random_bytes(4));
+            if (@file_put_contents($tmp, "<?php return " . var_export($keys, true) . ";\n") !== false) {
+                @chmod($tmp, 0600);
+                @rename($tmp, $kf);
+                $keys = include $kf;   // another request may have won the race: use the file's keys
+            } else {
+                error_log('data/ is not writable: keys could not be saved, the contact form will not work');
+            }
         }
-        define((string)$key, (string)$value);
     }
+    defined('FORM_KEY') || define('FORM_KEY', (string)$keys['FORM_KEY']);
+    defined('MAINT_KEY') || define('MAINT_KEY', (string)$keys['MAINT_KEY']);
     return $name;
+}
+
+/** Is this request on HTTPS? Server variables only (forwarded headers can be faked). */
+function is_https(): bool
+{
+    return (($_SERVER['HTTPS'] ?? '') !== '' && strtolower((string)$_SERVER['HTTPS']) !== 'off') || (string)($_SERVER['SERVER_PORT'] ?? '') === '443';
+}
+
+/** The host links point at: CANONICAL_HOST when set, else the host this request came to (validated). */
+function site_host(): string
+{
+    if (CANONICAL_HOST !== '') return CANONICAL_HOST;
+    $h = strtolower((string)($_SERVER['HTTP_HOST'] ?? ''));
+    if (preg_match('/^[a-z0-9]([a-z0-9.-]{0,251}[a-z0-9])?(:\d{1,5})?$/', $h)) return $h;
+    $h = strtolower((string)($_SERVER['SERVER_NAME'] ?? 'localhost'));
+    return preg_match('/^[a-z0-9.-]{1,253}$/', $h) ? $h : 'localhost';
 }
 
 /* ---------- SQLite (spec E.h) ---------- */
@@ -269,7 +320,7 @@ function smtp_send(string $subject, string $body, string $replyTo): bool
         $r = $read();
         return in_array((int)substr($r, 0, 3), $ok, true);
     };
-    $host = $strip(CANONICAL_HOST);
+    $host = $strip(explode(':', site_host())[0]);
     $ok = $cmd('', [220]) && $cmd("EHLO $host", [250]);
     if ($ok && $port !== 465) {
         $ok = $cmd('STARTTLS', [220]) && stream_socket_enable_crypto($fp, true, STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT | STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT) && $cmd("EHLO $host", [250]);

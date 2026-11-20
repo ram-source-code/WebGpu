@@ -1,6 +1,7 @@
 # secrets and state: never committed
 site/.env
-site/data/
+site/data/*
+!site/data/.htaccess
 # personal Claude Code settings
 .claude/settings.local.json
 # impeccable runtime folders (they also ignore themselves)

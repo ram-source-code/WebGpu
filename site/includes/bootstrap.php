@@ -21,7 +21,7 @@ $nonce = base64_encode(random_bytes(16));
 $csp = "default-src 'self'; script-src 'nonce-$nonce' 'strict-dynamic'; style-src 'self' 'nonce-$nonce'; "
      . "img-src 'self' data:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; "
      . "object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'";
-header("Content-Security-Policy: $csp; upgrade-insecure-requests");
+header("Content-Security-Policy: $csp");
 
 function error_page(int $code, array $headers = []): never
 {
@@ -53,12 +53,12 @@ set_error_handler(function (int $no, string $str, string $file, int $line): bool
 });
 
 define('ENV', load_env(ROOT . '/.env'));
-if (ENV === 'local') header("Content-Security-Policy: $csp");   // local is plain http: nothing to upgrade
+// on HTTPS, also upgrade any stray http:// subresource; on plain http (no certificate yet) that would break the page
+if (is_https()) header("Content-Security-Policy: $csp; upgrade-insecure-requests");
 
-// one 301 to https://CANONICAL_HOST with the same path (production only; local stays where it is)
-if (ENV !== 'local' && PHP_SAPI !== 'cli') {
-    $https = ($_SERVER['HTTPS'] ?? '') !== '' && strtolower((string)$_SERVER['HTTPS']) !== 'off';
-    if (!$https || strcasecmp((string)($_SERVER['HTTP_HOST'] ?? ''), CANONICAL_HOST) !== 0) {
+// one 301 to https://CANONICAL_HOST with the same path, only when a canonical host is set in .env
+if (ENV !== 'local' && PHP_SAPI !== 'cli' && CANONICAL_HOST !== '') {
+    if (!is_https() || strcasecmp((string)($_SERVER['HTTP_HOST'] ?? ''), CANONICAL_HOST) !== 0) {
         header('Location: https://' . CANONICAL_HOST . ($_SERVER['REQUEST_URI'] ?? '/'), true, 301);
         exit;
     }

@@ -1,6 +1,6 @@
 # Ramyar Salah — portfolio site
 
-Dev-only file. Never upload it (the `.htaccess` also refuses to serve `*.md`).
+Dev-only documentation; it lives outside `site/`, so uploading `site/` never ships it.
 
 A server-rendered PHP portfolio with a live WebGPU scene: a Zagros ridge on the night of Newroz, with a torch procession climbing switchbacks to a summit fire. Scroll is the hour (dusk → first light). The scene falls back to WebGL2, then to a still image; every page works without JavaScript.
 
@@ -10,16 +10,15 @@ A server-rendered PHP portfolio with a live WebGPU scene: a Zagros ridge on the 
 - Apache or LiteSpeed with `.htaccess` (`mod_rewrite`, `mod_headers`, `mod_deflate` on Apache). PHP's built-in server ignores `.htaccess`: use XAMPP/Apache locally.
 - No Node, no build step, no CDN.
 
-## First run
+## Deploy: upload the folder, nothing else
 
-```sh
-cd site
-php includes/cli/setup-env.php      # writes .env with fresh random keys; never overwrites
-```
+Upload the contents of `site/` into `public_html/` (or upload the whole `site` folder into any subfolder). That is all:
 
-Open `.env` and fill every `[CLIENT: …]` in `[production]`. The site refuses to start (styled 500, log line naming the key) while one is left. `[local]` is chosen automatically when the folder path matches its `when` globs (`*/htdocs/*` covers XAMPP); add your own folder if you build elsewhere.
+- No `.env` is needed. Links, canonical URLs, the sitemap and preview images use the domain the site is served from; secret keys are generated on the first visit and kept in `data/keys.php`; the database creates itself on the first message.
+- `data/` must stay writable by PHP (it is, on normal shared hosting) and is blocked from the web by `data/.htaccess` and the main `.htaccess`.
+- Works on PHP 8.1 or newer with `pdo_sqlite` (on by default at Hostinger), on Apache or LiteSpeed. Nginx-only hosts ignore `.htaccess` and are not supported as-is.
 
-`data/` is created on first request. It must be writable by PHP and is blocked from the web.
+Optional, later: copy `.env.example` to `.env` to set your domain (turns on one https redirect), a public email address (adds mailto and copy-email buttons), or SMTP so each message is also emailed to you.
 
 ## File map
 
@@ -27,7 +26,7 @@ Open `.env` and fill every `[CLIENT: …]` in `[production]`. The site refuses t
 site/
   index.php              the only PHP file the web can reach (front controller)
   .htaccess              routing, blocks, security headers, caching, compression
-  .env / .env.example    settings + secrets for every environment (.env is never committed)
+  .env.example           optional overrides (copy to .env); the site runs without it
   robots.txt, sitemap    generated routes (includes/pages/robots.php, sitemap.php)
   favicon.ico icon.svg apple-touch-icon.png og-default.jpg
   assets/css/main.css    all styles (tokens at the top)
@@ -45,15 +44,15 @@ site/
   includes/pages/        one file per route     ← edit page copy here
   includes/partials/     layout.php, scene-band.php
   includes/errors/       403 404 405 429 500 503
-  includes/cli/          messages.php (owner tool), setup-env.php
-  data/                  site.sqlite, php-error.log, maintenance.flag, backups/  (state, never overwritten by a deploy)
+  includes/cli/          messages.php (owner tool)
+  data/                  .htaccess (deny) + created at runtime: keys.php, site.sqlite, php-error.log, maintenance.flag, backups/
 ```
 
 ## Where content lives
 
 - Projects: `includes/content.php`. Set `placeholder` to `false` and fill `title`, `year`, `role`, `summary`, `stack` once a project is real. A placeholder project is `noindex` and stays out of the sitemap. Its case-study body is in the placeholder branch of `includes/pages/project.php`.
 - Copy: `includes/pages/*.php`. Every `client('…')` call renders a visible `[CLIENT: …]` slot; search for `client(` to find them all.
-- Contact email shown on the site: `CONTACT_EMAIL` in `.env`.
+- Contact email shown on the site: `CONTACT_EMAIL` in an optional `.env` (none by default: the site shows the contact form only).
 
 ## Contact messages (no admin panel by design)
 
@@ -74,8 +73,8 @@ Messages older than 12 months are deleted automatically on each new message (pri
 
 1. Zip the live site files and run `php includes/cli/messages.php backup` (rollback copy).
 2. Maintenance on: create `data/maintenance.flag` (visitors get 503 + `Retry-After`). Set a cookie `maint=<MAINT_KEY of production>` in your browser to bypass it.
-3. Upload the code (SFTP/File Manager) into `public_html/` or any subfolder. Never upload `data/`, and don't overwrite the server's `.env` unless you changed it.
-4. Upload nothing from this list: `README.md`, `CREDITS.md`, `STATUS.md`, `PRODUCT.md`, `DESIGN.md`, `.impeccable/`, `.claude/`, the spec, zips, backups.
+3. Upload the code (SFTP/File Manager) into `public_html/` or any subfolder. On an update, don't overwrite the server's `data/` folder (it holds the keys and messages).
+4. Only `site/` is uploaded; docs, `.impeccable/`, `.claude/` and the spec live outside it.
 5. Migrations run by themselves on the first request (`PRAGMA user_version`).
 6. Smoke test with the bypass cookie: home, a case study, the contact form, a 404.
 7. Clear LiteSpeed cache (hPanel), then delete `data/maintenance.flag`.

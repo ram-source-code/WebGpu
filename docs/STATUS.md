@@ -2,6 +2,13 @@
 
 Dev-only report (spec Part F). Built unattended on 20 Nov 2026. Statuses: ✅ ran it and saw the result · N/A with reason · `DEV` the developer must run it · ❌ failed (see Known issues).
 
+## Update 20 Nov 2026: zero-setup deploy (owner: "I drop the website folder in the server and it must work")
+
+- `.env` is now optional. With none: links/canonical/sitemap/OG use the request host (validated pattern); `FORM_KEY`/`MAINT_KEY` are generated on the first request into `data/keys.php` (blocked); the https redirect is off until `CANONICAL_HOST` is set; `upgrade-insecure-requests` is sent only on HTTPS so a site without a certificate still loads; email links appear only when `CONTACT_EMAIL` is set.
+- Tested as a real upload: a fresh copy of `site/` with no `.env` and an empty `data/`, owned by the PHP user, at a web root (`:8082`) and in a subfolder (`:8081/fresh/`): every page 200, 404s, blocks 403 (`/data/keys.php`, `/data/.htaccess`, `/.env.example`, `/includes/bootstrap.php`), keys file created on first visit, contact message saved, 21/21 browser tests pass, canonical and sitemap use the serving host.
+- Trade-offs the owner accepted by asking for zero setup (spec D1/D1b deviations): no fail-closed on a missing `.env`; until `CANONICAL_HOST` is set, a request with a forged Host header gets that host in its canonical/OG tags (HTML is `no-cache`; name-based hosting normally never routes such requests to this site); messages are stored but not emailed until SMTP is set, and reading them needs SSH (`php includes/cli/messages.php list`) or a download of `data/site.sqlite` through the File Manager.
+- Dev docs moved from `site/` to `docs/`, so `site/` is exactly the folder to upload.
+
 ## Read first: what was assumed (owner said "no asking")
 
 **Brief fields assumed** (Part A was empty; the owner asked for a 3D WebGPU portfolio in PHP for Ramyar Salah):
@@ -158,7 +165,7 @@ Dev-only report (spec Part F). Built unattended on 20 Nov 2026. Statuses: ✅ ra
 
 ## Developer checklist (run in this order)
 
-1. `cd site && php includes/cli/setup-env.php`, then fill every `[CLIENT: …]` in `.env [production]` (host, email, SMTP or empty `SMTP_HOST`).
+1. Upload `site/` (contents into `public_html/`, or the folder into a subfolder). Nothing to configure. Optional later: a `.env` from `.env.example` for your domain, a public email, or SMTP.
 2. Open the site in Chrome or Safari 26 on a machine with a real GPU: the status line under the hero must say **WebGPU · 14,336 torches simulated on your device**; move the pointer over the ridge (walkers turn toward it); hover a work entry (its stretch of the road brightens); drag the hour slider on the case study.
 3. Same on an Android phone: status says WebGPU or WebGL2 with 6,144/4,096 torches; scrolling stays smooth; the Pause button works.
 4. Deploy per README; smoke test with the maintenance bypass cookie.

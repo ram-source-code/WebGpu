@@ -66,8 +66,10 @@ $work = projects();
     <p class="close__lede">Building something real-time, spatial, or simply fast on the web? Tell me about it.</p>
     <div class="close__actions">
       <a class="button button--ink" href="<?= e(url('/contact')) ?>">Write a message<?= icon('arrow') ?></a>
+<?php if (CONTACT_EMAIL !== ''): ?>
       <button class="button button--line" type="button" data-copy="<?= e(CONTACT_EMAIL) ?>" hidden><?= icon('copy') ?><span data-copy-label>Copy email address</span></button>
-      <a class="link-quiet" href="mailto:<?= e(CONTACT_EMAIL) ?>" data-copy-fallback><?= e(CONTACT_EMAIL) ?></a>
+      <a class="link-quiet" href="mailto:<?= e(CONTACT_EMAIL) ?>"><?= e(CONTACT_EMAIL) ?></a>
+<?php endif ?>
     </div>
     <p class="visually-hidden" aria-live="polite" data-copy-status></p>
   </div>
