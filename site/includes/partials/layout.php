@@ -11,7 +11,7 @@ $person = [
     'name' => 'Ramyar Salah',
     'url' => abs_url('/'),
     'description' => 'Builds websites, desktop apps, admin utilities and custom business software for business owners.',
-    'sameAs' => array_values(array_filter([FACEBOOK_URL, 'https://github.com/ram-source-code'])),
+    'sameAs' => array_values(array_filter([FACEBOOK_URL, GITHUB_URL])),
 ];
 if (CONTACT_PHONE !== '') $person['telephone'] = CONTACT_PHONE;
 if (CONTACT_EMAIL !== '') $person['email'] = 'mailto:' . CONTACT_EMAIL;
@@ -102,7 +102,9 @@ if (!empty($meta['scene'])) header('Vary: Save-Data');
 <?php if (FACEBOOK_URL !== ''): ?>
       <li><a href="<?= e(FACEBOOK_URL) ?>" rel="noopener noreferrer" target="_blank">Facebook<?= icon('external') ?><span class="visually-hidden"> (opens in a new tab)</span></a></li>
 <?php endif ?>
-      <li><a href="https://github.com/ram-source-code" rel="noopener noreferrer" target="_blank">GitHub<?= icon('external') ?><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+<?php if (GITHUB_URL !== ''): ?>
+      <li><a href="<?= e(GITHUB_URL) ?>" rel="noopener noreferrer" target="_blank">GitHub<?= icon('external') ?><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+<?php endif ?>
       <li><a href="<?= e(url('/privacy')) ?>"<?= $current === '/privacy' ? ' aria-current="page"' : '' ?>>Privacy</a></li>
     </ul>
     <p class="site-footer__legal">© <?= date('Y') ?> <span translate="no">Ramyar Salah</span>. Fonts: Anybody and Atkinson Hyperlegible Next, <a href="<?= e(url('/assets/fonts/OFL.txt')) ?>">SIL Open Font License</a>.</p>

@@ -92,6 +92,7 @@ const SETTING_DEFAULTS = [
     'CONTACT_EMAIL' => 'ramyar.techie@gmail.com',      // shown on the site; receives form messages
     'CONTACT_PHONE' => '+9647700835557',               // E.164; also the WhatsApp number
     'FACEBOOK_URL'  => 'https://www.facebook.com/share/1JKBxYyGV9/',
+    'GITHUB_URL'    => '',                              // hidden; set to https://github.com/ram-source-code to show it again
     'SMTP_HOST' => '', 'SMTP_PORT' => '587', 'SMTP_USER' => '', 'SMTP_PASS' => '', 'MAIL_FROM' => '', 'MAIL_TO' => '',
 ];
 

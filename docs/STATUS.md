@@ -7,6 +7,7 @@ Dev-only report (spec Part F). Built unattended on 20 Nov 2026. Statuses: ✅ ra
 - From the owner: phone/WhatsApp 0770 083 5557 (`tel:+9647700835557`, `wa.me/9647700835557`), email ramyar.techie@gmail.com, Facebook link, Bachelor's degree in IT, builds websites, desktop apps, admin utilities and custom business software for business owners, modern design taste. Used in the hero, a new "What I make" section, About, Contact, footer, Person JSON-LD (telephone, email, sameAs) and the link-preview image.
 - Form messages are now emailed to the owner with zero setup (host `mail()`, SMTP optional) and still saved first.
 - Still placeholders: portrait photo, two project slots.
+- GitHub hidden on request: `GITHUB_URL` setting, empty by default (no footer link, not in JSON-LD `sameAs`); set it in `.env` to show it again.
 - Checked: detector 0, axe clean, 21/21 browser tests.
 
 ## Update 20 Nov 2026: smoothness pass and no build details on the page
