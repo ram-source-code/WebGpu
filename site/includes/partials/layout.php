@@ -39,9 +39,9 @@ if (!empty($meta['scene'])) header('Vary: Save-Data');
 <link rel="stylesheet" href="<?= e(asset('assets/css/main.css')) ?>">
 <?php if ($sceneJs): ?>
 <script type="importmap" nonce="<?= $nonce ?>"><?= json_script(['imports' => [
-    'rs/scene-core' => asset('assets/js/scene-core.js'),
-    'rs/scene-webgpu' => asset('assets/js/scene-webgpu.js'),
-    'rs/scene-webgl' => asset('assets/js/scene-webgl.js'),
+    'rs/core' => asset('assets/js/scene-core.js'),
+    'rs/a' => asset('assets/js/scene-a.js'),
+    'rs/b' => asset('assets/js/scene-b.js'),
 ]]) ?></script>
 <link rel="modulepreload" href="<?= e(asset('assets/js/scene-core.js')) ?>">
 <?php endif ?>

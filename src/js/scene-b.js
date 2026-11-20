@@ -1,6 +1,6 @@
 // WebGL2 fallback: the same ridge, sky and procession. Motion is analytic in the vertex shader
 // (no compute), so torches follow their lanes exactly and lean toward the pointer without memory.
-import { WORLD, PALETTE, GRID, torchCounts, bakeHeights } from 'rs/scene-core';
+import { WORLD, PALETTE, GRID, torchCounts, bakeHeights } from 'rs/core';
 
 const v3 = (a) => `vec3(${a.map((x) => x.toFixed(3)).join(', ')})`;
 
@@ -189,19 +189,28 @@ void main() {
   o = vec4(vCol * (core * 1.25 + halo) + SAFFRON * core * core * 0.25 * length(vCol), 1.0);
 }`;
 
-function program(gl, vs, fs) {
-  const make = (type, src) => {
-    const s = gl.createShader(type);
-    gl.shaderSource(s, src); gl.compileShader(s);
-    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) || 'shader');
-    return s;
-  };
+// Compile without blocking: with KHR_parallel_shader_compile the driver works in the background and we
+// check back once per frame; status is only queried when it is ready (querying early forces a stall).
+function startProgram(gl, vs, fs) {
+  const make = (type, src) => { const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh); return sh; };
   const p = gl.createProgram();
-  gl.attachShader(p, make(gl.VERTEX_SHADER, vs));
-  gl.attachShader(p, make(gl.FRAGMENT_SHADER, fs));
+  const v = make(gl.VERTEX_SHADER, vs), f = make(gl.FRAGMENT_SHADER, fs);
+  gl.attachShader(p, v); gl.attachShader(p, f);
   gl.linkProgram(p);
-  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p) || 'link');
-  return p;
+  return { p, v, f };
+}
+async function finishPrograms(gl, list) {
+  const ext = gl.getExtension('KHR_parallel_shader_compile');
+  if (ext) {
+    const ready = () => list.every(({ p }) => gl.getProgramParameter(p, ext.COMPLETION_STATUS_KHR));
+    while (!ready()) await new Promise((r) => requestAnimationFrame(r));
+  }
+  return list.map(({ p, v, f }) => {
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) {
+      throw new Error(gl.getShaderInfoLog(v) || gl.getShaderInfoLog(f) || gl.getProgramInfoLog(p) || 'link');
+    }
+    return p;
+  });
 }
 
 export async function createRenderer({ canvas, lowPower, state, allowSoftware = false }) {
@@ -213,7 +222,7 @@ export async function createRenderer({ canvas, lowPower, state, allowSoftware = 
     gl.getExtension('WEBGL_lose_context')?.loseContext();
     throw new Error('software renderer: ' + gpuName);
   }
-  const counts = torchCounts(lowPower, 'WebGL2');
+  const counts = torchCounts(lowPower, 'b');
   const n = GRID(true);
   const heights = await bakeHeights(n);
 
@@ -223,9 +232,9 @@ export async function createRenderer({ canvas, lowPower, state, allowSoftware = 
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
-  const sky = program(gl, SKY_VS, SKY_FS);
-  const ground = program(gl, GROUND_VS, GROUND_FS);
-  const fire = program(gl, FIRE_VS, FIRE_FS);
+  const [sky, ground, fire] = await finishPrograms(gl, [
+    startProgram(gl, SKY_VS, SKY_FS), startProgram(gl, GROUND_VS, GROUND_FS), startProgram(gl, FIRE_VS, FIRE_FS),
+  ]);
 
   const idx = new Uint32Array((n - 1) * (n - 1) * 6);
   let k = 0;
@@ -250,7 +259,7 @@ export async function createRenderer({ canvas, lowPower, state, allowSoftware = 
   canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); lostFn?.(); }, { once: true });
 
   return {
-    backend: 'WebGL2',
+    backend: 'b',
     zeroToOne: false,
     heights, gridN: n,
     torches: () => torchCount,

@@ -54,6 +54,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 body {
   margin: 0;
   background: var(--night);
@@ -101,7 +102,10 @@ main:focus { outline: none; }
 /* ---------- the scene ---------- */
 
 .scene { overflow: hidden; background: var(--night); }
-.scene--full { position: fixed; inset: 0; z-index: -1; }
+.scene--full {
+  /* sized to the large viewport: the phone address bar sliding in and out never resizes the canvas */
+  position: fixed; z-index: -1; inset-block-start: 0; inset-inline: 0; block-size: 100vh; block-size: 100lvh;
+}
 .scene__poster, .scene__poster img, .scene canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .scene__poster img { object-fit: cover; object-position: 58% 60%; }
 .scene canvas { opacity: 0; transition: opacity 0.9s var(--ease-out); touch-action: pan-y; }
@@ -115,6 +119,7 @@ main:focus { outline: none; }
 }
 .scene-bar__status { margin: 0; max-width: 46ch; }
 .scene-bar__toggle {
+  margin-inline-start: auto;
   display: inline-flex; align-items: center; gap: 0.45rem; min-height: 44px; padding: 0 1rem;
   border: 1px solid oklch(0.82 0.035 272 / 0.5); border-radius: 999px;
   background: oklch(0.2 0.055 272 / 0.55); color: var(--limestone); font: inherit; font-weight: 600; cursor: pointer;
@@ -130,8 +135,8 @@ main:focus { outline: none; }
   display: flex; flex-direction: column; justify-content: space-between; block-size: 40vh;
   padding-inline-end: 0.9rem; pointer-events: none;
   color: var(--limestone); font-size: 0.875rem; line-height: 1; text-align: end;
+  text-shadow: 0 1px 3px oklch(0.1 0.04 272 / 0.7);
 }
-.altitude span:not(.altitude__mark), .altitude::after { mix-blend-mode: difference; }
 .altitude span:not(.altitude__mark) { display: none; }
 .altitude::after { content: ""; position: absolute; inset-block: 0; inset-inline-end: 0.3rem; inline-size: 1px; background: var(--limestone); opacity: 0.7; }
 .altitude__mark {
@@ -340,6 +345,7 @@ main:focus { outline: none; }
   display: grid; place-items: center; padding: 1rem; border: 1.5px dashed currentColor; border-radius: 0.6rem; text-align: center;
 }
 .shot { margin: 0 0 2rem; } .shot__slot { aspect-ratio: 16 / 9; }
+.facts__link { margin-block-start: 1.25rem; }
 .portrait { margin: 0 0 1.5rem; max-inline-size: 18rem; } .portrait__slot { aspect-ratio: 4 / 5; }
 .next { padding-block: clamp(3rem, 7vw, 5rem); }
 .next__link { display: grid; gap: 0.3rem; text-decoration: none; }

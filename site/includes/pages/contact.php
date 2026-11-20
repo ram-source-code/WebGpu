@@ -133,7 +133,7 @@ $field = function (string $k) use ($errors): string {
 <?php
 return [
     'title' => $sent ? 'Message sent' : 'Contact',
-    'description' => 'Get in touch with Ramyar Salah about real-time 3D and WebGPU work on the web.',
+    'description' => 'Get in touch with Ramyar Salah about your project.',
     'path' => '/contact',
     'scene' => 'band',
     'current' => '/contact',

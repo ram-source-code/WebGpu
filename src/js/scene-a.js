@@ -1,5 +1,5 @@
 // WebGPU renderer: a compute pass moves every torch and ember; one render pass draws sky, ridge and fire.
-import { WORLD, PALETTE, GRID, torchCounts, bakeHeights, sampleHeights } from 'rs/scene-core';
+import { WORLD, PALETTE, GRID, torchCounts, bakeHeights, sampleHeights } from 'rs/core';
 
 // Uniform block: 12 × vec4f = 192 bytes (std layout: mat4 = 4 vec4, then 8 vec4).
 const UNIFORM_FLOATS = 52;
@@ -101,7 +101,7 @@ fn torchTarget(i: u32, seed: f32, t: f32) -> vec4f {
 }
 
 @compute @workgroup_size(64)
-fn simulate(@builtin(global_invocation_id) gid: vec3u) {
+fn step(@builtin(global_invocation_id) gid: vec3u) {
   let i = gid.x;
   let total = u32(u.env.w);
   if (i >= total) { return; }
@@ -307,11 +307,11 @@ export async function createRenderer({ canvas, lowPower, state, noPresent = fals
   if (!context && !noPresent) throw new Error('no webgpu context');
   const format = navigator.gpu.getPreferredCanvasFormat();
   context?.configure({ device, format, alphaMode: 'opaque', usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC });
-  device.addEventListener('uncapturederror', (e) => console.error('WebGPU:', e.error.message));
+  device.addEventListener('uncapturederror', (e) => e.preventDefault());
 
   const fallbackAdapter = adapter.info?.isFallbackAdapter === true;
   const low = lowPower || (fallbackAdapter && !noPresent);
-  const counts = torchCounts(low, 'WebGPU');
+  const counts = torchCounts(low, 'a');
   const total = counts.torches + counts.embers + counts.hill;
   const n = GRID(low);
   const sampleCount = low ? 1 : 4;
@@ -372,7 +372,7 @@ export async function createRenderer({ canvas, lowPower, state, noPresent = fals
   const ms = { count: sampleCount };
   const depthFormat = 'depth24plus';
   const [simPipe, skyPipe, groundPipe, firePipe] = await Promise.all([
-    device.createComputePipelineAsync({ label: 'simulate', layout: simPL, compute: { module: simMod, entryPoint: 'simulate' } }),
+    device.createComputePipelineAsync({ label: 'step', layout: simPL, compute: { module: simMod, entryPoint: 'step' } }),
     device.createRenderPipelineAsync({ label: 'sky', layout: drawPL,
       vertex: { module: drawMod, entryPoint: 'vsSky' },
       fragment: { module: drawMod, entryPoint: 'fsSky', targets: [{ format }] },
@@ -403,7 +403,7 @@ export async function createRenderer({ canvas, lowPower, state, noPresent = fals
   device.lost.then((info) => { dead = true; if (info.reason !== 'destroyed' && lost) lost(info); });
 
   return {
-    backend: 'WebGPU',
+    backend: 'a',
     debug: { device, context },
     zeroToOne: true,
     heights, gridN: n,
@@ -455,7 +455,7 @@ export async function createRenderer({ canvas, lowPower, state, noPresent = fals
 
       const enc = device.createCommandEncoder({ label: 'frame' });
       if (!paused || dt === 0) {
-        const cp = enc.beginComputePass({ label: 'simulate' });
+        const cp = enc.beginComputePass({ label: 'step' });
         cp.setPipeline(simPipe);
         cp.setBindGroup(0, simGroup);
         cp.dispatchWorkgroups(Math.ceil(total / 64));

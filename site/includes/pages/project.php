@@ -18,7 +18,7 @@ if ($p['placeholder']):
     <dl class="facts">
       <div><dt>Year</dt><dd><?= client('year') ?></dd></div>
       <div><dt>Role</dt><dd><?= client('your role') ?></dd></div>
-      <div><dt>Built with</dt><dd><?= client('tools') ?></dd></div>
+      <div><dt>Made for</dt><dd><?= client('client or audience') ?></dd></div>
     </dl>
     <div class="prose">
       <figure class="shot"><div class="shot__slot"><?= client('screenshot or short screen recording, 16:9') ?></div></figure>
@@ -32,37 +32,37 @@ if ($p['placeholder']):
   </div>
 </section>
 <?php else:
-    $band = ['id' => 'project-title', 'title' => e($p['title']), 'hour' => $p['hour'], 'progress' => '0.2', 'poster' => 'dusk', 'slider' => true,
-             'lede' => 'The live scene behind this site. Drag the hour to move through the night.'];
+    $band = ['id' => 'project-title', 'title' => e($p['title']), 'hour' => $p['hour'], 'progress' => '0.2', 'poster' => 'dusk',
+             'slider' => !empty($p['slider']), 'lede' => e($p['lede'])];
     require ROOT . '/includes/partials/scene-band.php';
 ?>
 <section class="ground ground--night" aria-label="Case study">
   <div class="wrap split">
-    <dl class="facts">
-      <div><dt>Year</dt><dd><?= e($p['year']) ?></dd></div>
-      <div><dt>Role</dt><dd><?= e($p['role']) ?></dd></div>
-      <div><dt>Built with</dt><dd><?= e(implode(', ', $p['stack'])) ?></dd></div>
-      <div><dt>Runs on</dt><dd data-backend-fact>Your device’s GPU, when the browser allows it</dd></div>
-    </dl>
+    <div class="facts-col">
+      <dl class="facts">
+<?php foreach ($p['facts'] as $dt => $dd): ?>
+        <div><dt><?= e($dt) ?></dt><dd><?= e($dd) ?></dd></div>
+<?php endforeach ?>
+      </dl>
+<?php if (!empty($p['link'])): ?>
+      <p class="facts__link"><a class="link-arrow" href="<?= e($p['link'][0]) ?>" rel="noopener noreferrer" target="_blank"><?= e($p['link'][1]) ?><?= icon('external') ?><span class="visually-hidden"> (opens in a new tab)</span></a></p>
+<?php endif ?>
+    </div>
     <div class="prose">
-      <h2>The idea</h2>
-      <p>On the eve of Newroz, the Kurdish new year on 21 March, fires are lit on the mountains. In towns like Akre, people carry torches up the hillside in a line that turns the whole slope into a road of light. The scene recreates that night: one ridge, one road, and every walker on it simulated.</p>
-
-      <h2>How it works</h2>
-      <ol class="steps">
-        <li><strong>A ridge, baked once.</strong> The terrain is layered noise shaped into a Zagros-like massif with a range behind it. It is computed on the CPU in small slices so the page never freezes, then uploaded to the GPU as a height grid that every shader samples.</li>
-        <li><strong>A compute pass per frame.</strong> Walkers move in small groups, so the line has gaps and clusters like a real procession. Each torch has a place on one of three valley approaches that merge into a single switchback road. A WGSL compute shader springs every torch toward its place, keeps it on the ground, and pulls it toward your pointer when you come close. Embers rise from the summit fire on a light wind, and bonfires flicker on the ranges behind.</li>
-        <li><strong>One render pass.</strong> Sky, ridge and fire draw together. The ground is lit by the road itself: each fragment measures its distance to the switchbacks, so the slope glows where the people are.</li>
-        <li><strong>Scroll is the hour.</strong> On the home page the night moves from dusk to first light as you read, and the camera climbs with it.</li>
-      </ol>
-
-      <h2>Built to degrade well</h2>
-      <ul class="tiers">
-        <li><span class="tiers__name">WebGPU</span> 14,336 torches, 6,144 embers and 64 far bonfires on a desktop GPU; 6,144 torches and 2,048 embers on phones. All of it moves in a compute pass.</li>
-        <li><span class="tiers__name">WebGL2</span> The same scene, 10,240 torches on desktop and 4,096 on phones, with motion computed in the vertex shader instead of a compute pass.</li>
-        <li><span class="tiers__name">No GPU</span> A still image of the same ridge, also used when the graphics chip only renders in software, when data saver is on, or with JavaScript off. Every page reads and works without the scene.</li>
-      </ul>
-      <p>If frames start running long, the scene lowers its resolution first, then halves the torches. A pause button sits under every scene, and with reduced motion turned on in your system settings the scene starts paused.</p>
+<?php if (!empty($p['image'])): [$src, $w, $h, $alt] = $p['image']; ?>
+      <figure class="shot shot--app">
+        <picture>
+          <source type="image/avif" srcset="<?= e(asset($src . '.avif')) ?>">
+          <img src="<?= e(asset($src . '.webp')) ?>" width="<?= (int)$w ?>" height="<?= (int)$h ?>" alt="<?= e($alt) ?>" loading="lazy" decoding="async">
+        </picture>
+      </figure>
+<?php endif ?>
+<?php foreach ($p['sections'] as [$heading, $paras]): ?>
+      <h2><?= e($heading) ?></h2>
+<?php foreach ($paras as $para): ?>
+      <p><?= e($para) ?></p>
+<?php endforeach ?>
+<?php endforeach ?>
     </div>
   </div>
 </section>
@@ -93,6 +93,7 @@ return [
         'description' => $p['summary'],
         'dateCreated' => $p['year'],
         'url' => abs_url('/work/' . $slug),
+        'sameAs' => empty($p['link']) ? [] : [$p['link'][0]],
         'creator' => ['@type' => 'Person', 'name' => 'Ramyar Salah', 'url' => abs_url('/')],
     ]],
 ];

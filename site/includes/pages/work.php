@@ -18,9 +18,6 @@ require ROOT . '/includes/partials/scene-band.php';
           <span class="climb__meta"><?= e($p['year'] . ' · ' . $p['role']) ?> · fire <?= (int)round($at * 100) ?>% up the road</span>
           <span class="climb__summary"><?= e($p['summary']) ?></span>
 <?php endif ?>
-<?php if ($p['stack']): ?>
-          <span class="climb__stack"><?= e(implode(' · ', $p['stack'])) ?></span>
-<?php endif ?>
         </a>
       </li>
 <?php endforeach ?>
@@ -30,7 +27,7 @@ require ROOT . '/includes/partials/scene-band.php';
 <?php
 return [
     'title' => 'Work',
-    'description' => 'Selected work by Ramyar Salah: real-time 3D and WebGPU projects, starting with the live Newroz scene that opens this site.',
+    'description' => 'Selected work by Ramyar Salah, starting with the Newroz night scene that opens this site.',
     'path' => '/work',
     'scene' => 'band',
     'current' => '/work',

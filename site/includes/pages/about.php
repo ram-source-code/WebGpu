@@ -1,6 +1,6 @@
 <?php
 $band = ['id' => 'about-title', 'title' => 'About', 'hour' => '0.3', 'progress' => '0.25', 'poster' => 'dusk',
-         'lede' => 'Ramyar Salah builds real-time 3D for the web.'];
+         'lede' => client('one line: who you are and what you make')];
 require ROOT . '/includes/partials/scene-band.php';
 ?>
 <section class="ground ground--ember" aria-labelledby="bio-title">
@@ -16,20 +16,20 @@ require ROOT . '/includes/partials/scene-band.php';
     </div>
   </div>
 </section>
-<section class="ground ground--night" aria-labelledby="craft-title">
+<section class="ground ground--night" aria-labelledby="site-title">
   <div class="wrap split">
-    <h2 id="craft-title" class="section-title">How this site is made</h2>
+    <h2 id="site-title" class="section-title">About this site</h2>
     <div class="prose">
-      <p>The pages are rendered on the server in plain PHP, so everything reads, links and works before any script runs. The scene is an enhancement on top: WebGPU where the browser has it, WebGL2 where it doesn’t, and a still image everywhere else.</p>
-      <p>No frameworks, no build step, nothing loaded from other servers. The whole site, fonts included, comes from one place.</p>
-      <p><a class="link-arrow" href="<?= e(url('/work/newroz-on-the-ridge')) ?>">Read how the scene works<?= icon('arrow') ?></a></p>
+      <p>The look of this site comes from Newroz, from fires carried up the Zagros mountains on the eve of the new year, not from a template.</p>
+      <p>It is made to work for everyone: it reads on an old phone and a weak connection, with or without motion, and with the keyboard alone.</p>
+      <p><a class="link-arrow" href="<?= e(url('/work/newroz-on-the-ridge')) ?>">See the night scene<?= icon('arrow') ?></a></p>
     </div>
   </div>
 </section>
 <?php
 return [
     'title' => 'About',
-    'description' => 'About Ramyar Salah, who builds real-time 3D for the web, and how this WebGPU portfolio is made.',
+    'description' => 'About Ramyar Salah, and the Newroz night that this site is made from.',
     'path' => '/about',
     'scene' => 'band',
     'current' => '/about',

@@ -30,11 +30,7 @@ site/
   robots.txt, sitemap    generated routes (includes/pages/robots.php, sitemap.php)
   favicon.ico icon.svg apple-touch-icon.png og-default.jpg
   assets/css/main.css    all styles (tokens at the top)
-  assets/js/scene.js     entry: starts the scene
-  assets/js/scene-core.js     terrain, camera, input, loop, fallbacks
-  assets/js/scene-webgpu.js   WebGPU: compute pass + render pass (WGSL)
-  assets/js/scene-webgl.js    WebGL2 fallback (GLSL)
-  assets/js/site.js      copy-email, form error announcements
+  assets/js/*.js         minified copies of src/js (see "Editing the scripts")
   assets/img/            posters (AVIF/WebP), icon sprite, ridge edge, arrow mask
   assets/fonts/          Anybody + Atkinson Hyperlegible Next (WOFF2) + OFL.txt
   includes/bootstrap.php fail-closed handler, CSP nonce, .env, canonical redirect, maintenance
@@ -47,6 +43,14 @@ site/
   includes/cli/          messages.php (owner tool)
   data/                  .htaccess (deny) + created at runtime: keys.php, site.sqlite, php-error.log, maintenance.flag, backups/
 ```
+
+## Editing the scripts
+
+The readable scripts live in `src/js/` (outside `site/`, never uploaded):
+
+- `scene.js` entry · `scene-core.js` terrain, camera, input, loop, slow-device guard · `scene-a.js` first renderer · `scene-b.js` fallback renderer · `site.js` copy-email and form errors.
+
+`site/assets/js/` holds minified copies with comments and shader comments stripped, so the shipped files say nothing about how they are made. After editing `src/js`, run `sh tools/build-js.sh` (needs Node) and upload `site/` again.
 
 ## Where content lives
 

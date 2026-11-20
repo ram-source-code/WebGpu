@@ -4,14 +4,13 @@ $work = projects();
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero__copy">
     <h1 id="hero-title" class="hero__name"><span>Ramyar</span> <span>Salah</span></h1>
-    <p class="hero__lede">Real-time 3D for the web, built on WebGPU.</p>
+    <p class="hero__lede">Websites that move, made to feel light.</p>
     <div class="hero__actions">
       <a class="button button--fire" href="<?= e(url('/contact')) ?>">Get in touch<?= icon('arrow') ?></a>
       <a class="link-quiet" href="#work">See the work</a>
     </div>
   </div>
   <div class="scene-bar">
-    <p class="scene-bar__status" data-scene-status aria-live="polite">A still from the scene: Newroz fires climbing a Zagros ridge at dusk.</p>
     <button class="scene-bar__toggle" type="button" data-scene-toggle hidden
       data-icon-play="<?= e(asset('assets/img/icons.svg')) ?>#play" data-icon-pause="<?= e(asset('assets/img/icons.svg')) ?>#pause" aria-label="Pause the scene">
       <svg class="icon" width="20" height="20" aria-hidden="true"><use href="<?= e(asset('assets/img/icons.svg')) ?>#pause"/></svg><span data-label>Pause</span>
@@ -51,7 +50,7 @@ $work = projects();
     <h2 id="about-title" class="section-title">Why a mountain on fire</h2>
     <div class="prose">
       <p>On the night before Newroz, the Kurdish new year, fires are lit on the mountains, and in towns like Akre people carry torches up the hillside until the whole slope is a moving line of light.</p>
-      <p>This site rebuilds that night as a GPU simulation. Every point of light is a walker with a place in the line, a little wind, and a tendency to step toward you. Move your pointer, or touch the ridge, and the closest walkers turn your way.</p>
+      <p>This site rebuilds that night. Every point of light is a walker with a place in the line, a little wind, and a tendency to step toward you. Move your pointer, or touch the ridge, and the closest walkers turn your way.</p>
       <p><?= client('two or three sentences about you: where you work from, what you like to build, who you build it for') ?></p>
       <p><a class="link-arrow" href="<?= e(url('/about')) ?>">More about Ramyar<?= icon('arrow') ?></a></p>
     </div>
@@ -63,7 +62,7 @@ $work = projects();
 <section class="ground ground--dawn ridge-top" aria-labelledby="close-title">
   <div class="wrap close">
     <h2 id="close-title" class="close__title">Light the next fire</h2>
-    <p class="close__lede">Building something real-time, spatial, or simply fast on the web? Tell me about it.</p>
+    <p class="close__lede">Have something in mind? Tell me about it.</p>
     <div class="close__actions">
       <a class="button button--ink" href="<?= e(url('/contact')) ?>">Write a message<?= icon('arrow') ?></a>
 <?php if (CONTACT_EMAIL !== ''): ?>
@@ -76,8 +75,8 @@ $work = projects();
 </section>
 <?php
 return [
-    'title' => 'Ramyar Salah · Real-time 3D for the web',
-    'description' => 'Portfolio of Ramyar Salah: real-time 3D for the web, built on WebGPU. The opening scene is a live GPU simulation of Newroz fires on a Zagros ridge.',
+    'title' => 'Ramyar Salah · Portfolio',
+    'description' => 'Portfolio of Ramyar Salah. The site opens on a live Newroz night: a torch procession climbing a Zagros ridge to a summit fire.',
     'path' => '/',
     'scene' => 'full',
     'current' => '/',
