@@ -16,3 +16,11 @@ From Mixkit (mixkit.co), under the Mixkit Sound Effects Free License: allowed in
 ## Music
 
 No music is in the file. Add the track inside TikTok or Instagram from their licensed music library, so it is cleared for the platform.
+
+## HyperFrames reel (`media/ramyar-salah-reel.mp4`)
+
+`hyperframes/index.html` is the HyperFrames composition (1080×1920, 60 fps, 20 s): still type, fades only.
+Its `media/` folder is not committed (large). Rebuild it from the captures: `bake.py` draws the fingertip/cursor
+into the phone and desktop frames, then ffmpeg encodes `phone.mp4`, `desktop.mp4`, `scene.mp4`; copy the two fonts,
+`gsap.min.js` (from the gsap npm package) and the Mixkit WAVs next to it. Render:
+`npx hyperframes@0.9.77 render -f 60 -q delivery --video-bitrate 16M --video-frame-format png -o reel.mp4`.
