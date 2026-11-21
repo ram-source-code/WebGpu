@@ -56,6 +56,7 @@ def font(name, size, axes):
 
 
 CAP = font('anybody.ttf', 74, [76, 800])
+SIDE = font('anybody.ttf', 58, [72, 820])
 NAME = font('anybody.ttf', 250, [60, 830])
 TAG = font('atkinson.ttf', 46, [700])
 PILL = font('atkinson.ttf', 46, [800])
@@ -133,7 +134,7 @@ def phone_device(canvas, f, cx, top, width, alpha=1.0, crop_top=0, ptr=True, ful
 def desktop_window(canvas, f, x, y, width, alpha=1.0, ptr=True):
     src = desk(f)
     s = width / 1280
-    scr = src.resize((int(width), int(round(800 * s))), Image.LANCZOS)
+    scr = src.resize((int(width), int(round(800 * s))), Image.LANCZOS)   # source is 2560x1600: a clean downscale
     bar = int(round(46 * s / 0.78))
     win = Image.new('RGB', (int(width), bar + scr.height), (22, 27, 58))
     d = ImageDraw.Draw(win)
@@ -148,7 +149,7 @@ def desktop_window(canvas, f, x, y, width, alpha=1.0, ptr=True):
     if ptr:
         rec = DK_PTR.get(f)
         if rec and rec.get('kind') == 'mouse':
-            draw_cursor(canvas, x + rec['x'] * s, y + bar + rec['y'] * s, 1.25 * s / 0.78, alpha)
+            draw_cursor(canvas, x + rec['x'] * s, y + bar + rec['y'] * s, 1.7, alpha)
 
 
 def draw_cursor(canvas, x, y, k, alpha=1.0):
@@ -276,51 +277,83 @@ def flash(canvas, amount, color=(255, 255, 255)):
     return canvas
 
 
+DW = 1040                                   # desktop screen width
+PW = 503                                    # phone screen width (from the 1080 px capture)
+DESK_Y, PHONE_Y = 58, 800
+
+# which device leads in each part of the story: 'phone', 'desk' or 'both'
+def lead(t):
+    if t < BAR * 2: return 'phone'
+    if t < BAR * 4: return 'desk'
+    if t < BAR * 7: return 'both'
+    return 'phone'
+
+SIDE_CAPS = [
+    (0.1, BAR * 2 - 0.05, ['touch the', 'mountain.', 'the fire', 'follows.']),
+    (BAR * 2, BAR * 4 - 0.05, ['on desktop', 'your mouse', 'is a torch']),
+    (BAR * 4, BAR * 7 - 0.05, ['scroll.', 'the night', 'passes on', 'every screen']),
+    (BAR * 7, T5 - 0.05, ['one tap', 'to', 'WhatsApp']),
+]
+
+def side_caption(canvas, t):
+    for a, b, lines in SIDE_CAPS:
+        if a <= t < b:
+            layer = Image.new('RGBA', canvas.size, (0, 0, 0, 0))
+            d = ImageDraw.Draw(layer)
+            y = PHONE_Y + 60
+            for i, line in enumerate(lines):
+                k = expo(seg(t, a + i * 0.08, a + i * 0.08 + 0.2)) * (1 - seg(t, b - 0.12, b))
+                if k <= 0: continue
+                d.text((26 + (1 - k) * -40, y), line, font=SIDE, fill=LIME + (int(255 * k),))
+                y += 66
+            canvas.paste(layer, (0, 0), layer)
+
+def weight(t, who):
+    """1 when this device leads, 0.0 when the other one does; eased over 0.3 s at each change."""
+    def w_at(x):
+        l = lead(x)
+        return 1.0 if l in (who, 'both') else 0.0
+    # blend around the last change
+    for edge in (BAR * 2, BAR * 4, BAR * 7):
+        if edge - 0.15 <= t <= edge + 0.15:
+            k = inout(seg(t, edge - 0.15, edge + 0.15))
+            return lerp(w_at(edge - 0.2), w_at(edge + 0.2), k)
+    return w_at(t)
+
+def dim(canvas, box, amount, r):
+    if amount <= 0: return
+    x0, y0, x1, y1 = [int(v) for v in box]
+    m = rmask(x1 - x0, y1 - y0, r).point(lambda v: int(v * amount))
+    canvas.paste(Image.new('RGB', (x1 - x0, y1 - y0), NIGHT), (x0, y0), m)
+
 def frame(t):
     f = int(round(t * FPS))
-    pulse = 1 + 0.025 * math.exp(-((t % BAR) / 0.09))      # small push on every bar line
-    if t < T1 - 0.25:                                        # A: phone full-bleed (hook)
-        c = Image.new('RGB', (W, H), NIGHT)
-        z = lerp(1.0, 1.05, t / T1) * pulse
-        wpx = 1080 * z
-        phone_device(c, f, W / 2, -(1920 * z - 1920) / 2, wpx, full=True)
-        c = flash(c, 0.55 * (1 - seg(t, 0, 0.22)))
-    elif t < T1 + 0.3:                                       # A->C: phone shrinks away, desktop flies in
-        k = inout(seg(t, T1 - 0.25, T1 + 0.3))
-        c = background().copy()
-        wpx = lerp(1080 * 1.05, 360, k)
-        phone_device(c, f, lerp(W / 2, -260, k ** 1.6), lerp(-40, 760, k), wpx, alpha=1 - seg(k, 0.7, 1), full=k < 0.08)
-        desktop_window(c, f, lerp(W + 40, 40, expo(seg(t, T1 - 0.05, T1 + 0.3))), 560, 1000, alpha=seg(t, T1 - 0.1, T1))
-    elif t < T3 - 0.2:                                       # C: desktop
-        c = background().copy()
-        z = lerp(1.0, 1.05, seg(t, T1, T3)) * pulse
-        wpx = 1000 * z
-        desktop_window(c, f, W / 2 - wpx / 2, 560 - (z - 1) * 300, wpx)
-    elif t < T3 + 0.3:                                       # C->D: desktop rises, phone arrives
-        k = inout(seg(t, T3 - 0.2, T3 + 0.3))
-        c = background().copy()
-        desktop_window(c, f, W / 2 - 500, lerp(560, 150, k), 1000)
-        phone_device(c, f, W / 2, lerp(H + 60, 1000, expo(seg(t, T3 - 0.05, T3 + 0.3))), 340)
-    elif t < T4 - 0.2:                                       # D: both screens, same night
-        c = background().copy()
-        desktop_window(c, f, W / 2 - 500, 150, 1000 * pulse if False else 1000)
-        phone_device(c, f, W / 2, 1000, 340 * pulse)
-    elif t < T4 + 0.25:                                      # D->E: phone grows to full screen
-        k = inout(seg(t, T4 - 0.2, T4 + 0.25))
-        c = background().copy()
-        desktop_window(c, f, W / 2 - 500, lerp(150, -900, k), 1000, alpha=1 - k)
-        wpx = lerp(340, 1080, k)
-        crop = crop_for_tap()
-        phone_device(c, f, W / 2, lerp(1000, -crop * (wpx / 1080), k), wpx, full=k > 0.98)
-    elif t < T5:                                             # E: phone full, tap WhatsApp
-        c = Image.new('RGB', (W, H), NIGHT)
-        crop = crop_for_tap()
-        phone_device(c, f, W / 2, 0, 1080 * pulse, crop_top=crop, full=True)
-    else:                                                    # F: end card
+    if t >= T5:
         c = end_card(t)
         c = flash(c, 0.6 * (1 - seg(t, T5, T5 + 0.2)))
         c = flash(c, 0.9 * (1 - seg(t, T5 + BEAT * 6, T5 + BEAT * 6 + 0.12)) * (t >= T5 + BEAT * 6))
-    caption(c, t)
+        return c
+    c = background().copy()
+    pulse = 1 + 0.018 * math.exp(-((t % BAR) / 0.09))
+    wd, wp = weight(t, 'desk'), weight(t, 'phone')
+    # desktop: anchored top-centre
+    sd = lerp(0.93, 1.0, wd) * (pulse if wd > 0.5 else 1)
+    dw = DW * sd
+    dx, dy = W / 2 - dw / 2, DESK_Y
+    desktop_window(c, f, dx, dy, dw)
+    dh = (800 * dw / 1280) + int(round(46 * (dw / 1280) / 0.78))
+    dim(c, (dx, dy, dx + dw, dy + dh), 0.42 * (1 - wd), int(22 * (dw / 1280) / 0.78))
+    # phone: anchored bottom-centre
+    sp = lerp(0.93, 1.0, wp) * (pulse if wp > 0.5 else 1)
+    pw = PW * sp
+    ph = 2338 * pw / 1080
+    py = PHONE_Y + (PW * 2338 / 1080 - ph)
+    phone_device(c, f, W / 2 + 40, py, pw)
+    bez = max(6, int(14 * (pw / 1080) * 2.2))
+    dim(c, (W / 2 + 40 - pw / 2, py, W / 2 + 40 + pw / 2, py + ph), 0.42 * (1 - wp), int(70 * (pw / 1080) * 2.2))
+    if t < 0.22:
+        c = flash(c, 0.5 * (1 - seg(t, 0, 0.22)))
+    side_caption(c, t)
     return c
 
 
@@ -333,7 +366,7 @@ def crop_for_tap():
     return int(clamp(y - 1150, 0, 418))
 
 
-TRANSITIONS = [(T1 - 0.25, T1 + 0.3), (T3 - 0.2, T3 + 0.3), (T4 - 0.2, T4 + 0.25)]
+TRANSITIONS = []
 
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
