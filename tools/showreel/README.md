@@ -1,6 +1,6 @@
 # Showreel tools
 
-How `media/ramyar-salah-showreel.mp4` was made: a vertical 1080×1920, 30 fps, 17 s video cut to 140 BPM, for TikTok and Instagram Reels.
+The earlier Python-composited reel (`capture.js`, `compose.py`, `mix.py`) has been replaced by the HyperFrames reel below; those scripts are kept for reference.
 
 1. `capture.js` (desktop at 2× pixel density, scene at full resolution) drives the real site (Apache on `localhost:8080`, `?rsforce`) in headless Chromium on a virtual clock, one frame at a time: `node capture.js phone phone/` and `node capture.js desktop desk/`. It records the scripted touch and mouse positions next to the frames.
 2. `compose.py` builds the vertical frames: the desktop browser window on top and the phone below, both whole and always visible, the leading one larger and brighter; then the end card. It adds the cursor, touch ripples and captions. It needs `anybody.ttf` and `atkinson.ttf` next to it (convert the site's WOFF2 files with fontTools). Run `python3 compose.py comp/`.
@@ -16,3 +16,11 @@ From Mixkit (mixkit.co), under the Mixkit Sound Effects Free License: allowed in
 ## Music
 
 No music is in the file. Add the track inside TikTok or Instagram from their licensed music library, so it is cleared for the platform.
+
+## HyperFrames reel (`media/ramyar-salah-reel.mp4`)
+
+`hyperframes/index.html` is the HyperFrames composition (1080×1920, 60 fps, 12 bars = 20.6 s at 140 BPM): every cut and entrance lands on the Mist grid; text never pulses. Start Mist on its first downbeat at 0:00 in the app.
+Its `media/` folder is not committed (large). Rebuild it from the captures: `bake.py` draws the fingertip/cursor
+into the phone and desktop frames, then ffmpeg encodes `phone.mp4`, `desktop.mp4`, `scene.mp4`; copy the two fonts,
+`gsap.min.js` (from the gsap npm package) and the Mixkit WAVs next to it. Render:
+`npx hyperframes@0.9.77 render -f 60 -q delivery --video-bitrate 16M --video-frame-format png -o reel.mp4`.

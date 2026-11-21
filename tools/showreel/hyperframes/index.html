@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Anybody"; src: url("media/anybody.ttf"); font-weight: 100 900; font-stretch: 50% 150%; }
+      @font-face { font-family: "Atkinson"; src: url("media/atkinson.ttf"); font-weight: 200 800; }
+      :root {
+        --night: #0e132f;
+        --ink: #f5eee0;
+        --ember: #f18336;
+        --muted: rgba(245, 238, 224, 0.72);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--night); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Atkinson", sans-serif; color: var(--ink); }
+      .full { position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      .layer { position: absolute; inset: 0; }
+      .display { font-family: "Anybody", sans-serif; font-weight: 860; font-stretch: 82%; letter-spacing: -0.02em; line-height: 0.9; }
+
+      #bg { filter: blur(26px) brightness(0.55) saturate(1.1); transform: scale(1.12); }
+
+      /* opening */
+      #name1 { position: absolute; left: 80px; top: 230px; font-size: 230px; }
+      #sub1 { position: absolute; left: 84px; top: 700px; width: 820px; font-size: 48px; line-height: 1.25; color: var(--muted); }
+
+      /* captions */
+      .cap { position: absolute; left: 80px; top: 140px; width: 920px; font-size: 96px; }
+      .note { position: absolute; font-size: 40px; line-height: 1.3; color: var(--muted); }
+
+      /* devices */
+      #phone { position: absolute; left: 230px; top: 420px; width: 620px; height: 1339px; border-radius: 78px; background: #04050b;
+               padding: 14px; box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6), inset 0 0 0 2px rgba(255, 255, 255, 0.08); }
+      #phone .screen { position: relative; width: 592px; height: 1282px; border-radius: 66px; overflow: hidden; background: var(--night); }
+      #phone video { width: 592px; height: 1282px; display: block; }
+      #desk { position: absolute; left: 40px; top: 330px; width: 1000px; border-radius: 22px; overflow: hidden; background: #141834;
+              box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6), inset 0 0 0 2px rgba(255, 255, 255, 0.06); }
+      #desk .bar { height: 40px; display: flex; gap: 11px; align-items: center; padding-left: 20px; }
+      #desk .bar i { width: 13px; height: 13px; border-radius: 50%; background: rgba(245, 238, 224, 0.28); }
+      #desk video { width: 1000px; height: 625px; display: block; }
+
+      /* end card */
+      #end { background: var(--ink); color: var(--night); }
+      #name2 { position: absolute; left: 80px; top: 560px; font-size: 230px; }
+      #sub2 { position: absolute; left: 84px; top: 1040px; width: 860px; font-size: 50px; line-height: 1.25; color: rgba(14, 19, 47, 0.78); }
+      #cta { position: absolute; left: 84px; top: 1310px; font-size: 54px; font-weight: 700; color: var(--night); }
+      #cta span { display: inline-block; border-bottom: 6px solid var(--ember); padding-bottom: 6px; }
+      #rule { position: absolute; left: 84px; top: 520px; width: 120px; height: 8px; background: var(--ember); transform-origin: left center; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="20.571" data-width="1080" data-height="1920" data-fps="60">
+
+      <!-- background: the site's night, blurred, behind the devices -->
+      <video id="bg" class="full clip" src="media/scene.mp4" muted playsinline
+             data-start="3.3" data-duration="13.5" data-media-start="0.2" data-track-index="0"></video>
+
+      <!-- 1. the night, full screen -->
+      <div id="open" class="layer">
+        <video id="scene" class="full clip" src="media/scene.mp4" muted playsinline
+               data-start="0" data-duration="3.6" data-media-start="0" data-track-index="1"></video>
+        <h1 id="name1" class="display">Ramyar<br />Salah</h1>
+        <p id="sub1">Websites, desktop apps and custom business software.</p>
+      </div>
+
+      <!-- 2–3. phone, then phone + desktop -->
+      <h2 id="cap2" class="cap display">Touch moves<br />the fire.</h2>
+      <h2 id="cap3" class="cap display">One site.<br />Every screen.</h2>
+      <p id="note3" class="note" style="left: 80px; top: 1060px; width: 520px">A mouse on desktop.<br />A finger on the phone.<br />Same night, same fire.</p>
+
+      <div id="desk">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <video id="desk-video" class="clip" src="media/desktop.mp4" muted playsinline
+               data-start="10" data-duration="7" data-media-start="6.7" data-track-index="2"></video>
+      </div>
+
+      <div id="phone">
+        <div class="screen">
+          <video id="phone-video" class="clip" src="media/phone.mp4" muted playsinline
+                 data-start="3.3" data-duration="13.7" data-media-start="0" data-track-index="3"></video>
+        </div>
+      </div>
+
+      <!-- 4. dawn -->
+      <div id="end" class="layer">
+        <div id="rule"></div>
+        <h2 id="name2" class="display">Ramyar<br />Salah</h2>
+        <p id="sub2">I make business owners’ dreams come true: websites, desktop apps and custom business software.</p>
+        <p id="cta"><span>Message me on WhatsApp</span></p>
+      </div>
+
+      <!-- sound: Mixkit effects (music is added in the app) -->
+      <audio id="sfx-bass-rumble" class="clip" src="media/bass-rumble.wav" data-start="0" data-duration="4" data-volume="0.35" data-fade-in="0.4" data-fade-out="1.2" data-track-index="10"></audio>
+      <audio id="sfx-whoosh-cine" class="clip" src="media/whoosh-cine.wav" data-start="2.34" data-duration="1.33" data-volume="0.55" data-track-index="11"></audio>
+      <audio id="sfx-click-classic" class="clip" src="media/click-classic.wav" data-start="3.514" data-duration="0.29" data-volume="0.4" data-track-index="12"></audio>
+      <audio id="sfx-whoosh-arrow" class="clip" src="media/whoosh-arrow.wav" data-start="9.99" data-duration="1.1" data-volume="0.45" data-track-index="13"></audio>
+      <audio id="sfx-click-double" class="clip" src="media/click-double.wav" data-start="15.586" data-duration="0.47" data-volume="0.5" data-track-index="14"></audio>
+      <audio id="sfx-sweep-small" class="clip" src="media/sweep-small.wav" data-start="16.847" data-duration="0.78" data-volume="0.4" data-track-index="15"></audio>
+      <audio id="sfx-impact-deep" class="clip" src="media/impact-deep.wav" data-start="16.592" data-duration="3.95" data-volume="0.45" data-fade-out="1.5" data-track-index="16"></audio>
+    </div>
+
+    <script>
+      // Cuts and entrances land on Mist's 140 BPM grid (beat 0.429 s, bar 1.714 s). Text never pulses.
+      const tl = gsap.timeline({ paused: true });
+      const ease = "power3.out";
+      const B = 0.42857142857142855, BAR = 1.7142857142857142;
+
+      gsap.set(["#cap2", "#cap3", "#note3", "#desk", "#phone", "#end", "#bg", "#name1", "#sub1"], { opacity: 0 });
+
+      // bars 0–2: name over the night
+      tl.to("#scene", { scale: 1.06, duration: 3.6, ease: "none" }, 0);
+      tl.fromTo("#name1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.1, ease }, 0);
+      tl.fromTo("#sub1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.0, ease }, BAR);
+      tl.to(["#name1", "#sub1"], { opacity: 0, duration: 0.4, ease: "power2.in" }, 2 * BAR - 0.4);
+
+      // bar 2: the phone
+      tl.to("#bg", { opacity: 1, duration: 0.5, ease: "power1.out" }, 2 * BAR - 0.15);
+      tl.to("#open", { opacity: 0, duration: 0.5, ease: "power1.out" }, 2 * BAR);
+      tl.fromTo("#phone", { opacity: 0, y: 140 }, { opacity: 1, y: 0, duration: 0.9, ease }, 2 * BAR);
+      tl.fromTo("#cap2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease }, 2 * BAR + 2 * B);
+      tl.to("#cap2", { opacity: 0, duration: 0.35, ease: "power2.in" }, 6 * BAR - 0.4);
+
+      // bar 6: phone steps aside, desktop arrives on the downbeat
+      tl.to("#phone", { x: 288, y: 330, scale: 0.62, duration: 1.0, ease: "power3.inOut" }, 6 * BAR - 0.3);
+      tl.fromTo("#desk", { opacity: 0, y: -70 }, { opacity: 1, y: 0, duration: 1.0, ease }, 6 * BAR);
+      tl.fromTo("#cap3", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease }, 6 * BAR + 2 * B);
+      tl.fromTo("#note3", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8, ease }, 7 * BAR);
+
+      // bar 10: dawn
+      tl.to("#end", { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 10 * BAR - 0.6);
+      tl.fromTo("#rule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease }, 10 * BAR);
+      tl.fromTo("#name2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.0, ease }, 10 * BAR);
+      tl.fromTo("#sub2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease }, 10 * BAR + 2 * B);
+      tl.fromTo("#cta", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease }, 11 * BAR);
+      tl.to({}, { duration: 0.01 }, 12 * BAR - 0.01);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
