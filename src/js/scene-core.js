@@ -261,7 +261,7 @@ export async function startScene(root) {
     last = now;
     step(dt);
     warm += raw;
-    if (warm > 0.8) {                                   // skip start-up hiccups
+    if (warm > 0.8 && !force) {                        // skip start-up hiccups; ?rsforce never adapts
       slowT = raw > 0.026 ? slowT + raw : Math.max(0, slowT - raw);
       crawlT = raw > 0.05 ? crawlT + raw : Math.max(0, crawlT - raw);
       awful = raw > 0.2 ? awful + 1 : 0;
