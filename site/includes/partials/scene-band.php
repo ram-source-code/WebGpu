@@ -17,7 +17,6 @@ $icons = asset('assets/img/icons.svg');
 <?php endif ?>
   </div>
   <div class="scene-bar">
-    <p class="scene-bar__status" data-scene-status aria-live="polite">A still from the scene.</p>
 <?php if (!empty($band['slider'])): ?>
     <label class="hour" hidden data-hour-control>
       <span>Hour</span>

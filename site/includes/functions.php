@@ -13,26 +13,6 @@ function json_script(mixed $v): string
     return json_encode($v, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
 }
 
-/** A visible placeholder for content only the owner can supply (spec: never invent content). */
-function client(string $what): string
-{
-    return '<span class="client-slot">[CLIENT: ' . e($what) . ']</span>';
-}
-
-/** One dashed block holding several owner-supplied lines (label => what to write). */
-function client_block(array $lines): string
-{
-    $o = '<span class="client-block">';
-    foreach ($lines as $label => $what) $o .= '<span class="client-block__line"><span class="client-block__label">' . e($label) . '</span> [CLIENT: ' . e($what) . ']</span>';
-    return $o . '</span>';
-}
-
-/** Where a project's fire sits on the road (0 = valley, 1 = summit), from its order in the list. */
-function climb_position(int $i, int $n): float
-{
-    return round(($i + 1) / ($n + 1), 2);
-}
-
 /* ---------- URLs (spec E.a) ---------- */
 
 // Pass paths un-encoded and site-relative; append "#fragment" after the call.
@@ -89,7 +69,10 @@ function route(array $routes, string $method, string $path): array
 const SETTING_DEFAULTS = [
     'SITE_NAME' => 'Ramyar Salah',
     'CANONICAL_HOST' => '',      // empty: use the host the site is served from
-    'CONTACT_EMAIL' => '',       // empty: the site shows only the contact form
+    'CONTACT_EMAIL' => 'ramyar.techie@gmail.com',      // shown on the site; receives form messages
+    'CONTACT_PHONE' => '+9647700835557',               // E.164; also the WhatsApp number
+    'FACEBOOK_URL'  => 'https://www.facebook.com/share/1JKBxYyGV9/',
+    'GITHUB_URL'    => '',                              // hidden; set to https://github.com/ram-source-code to show it again
     'SMTP_HOST' => '', 'SMTP_PORT' => '587', 'SMTP_USER' => '', 'SMTP_PASS' => '', 'MAIL_FROM' => '', 'MAIL_TO' => '',
 ];
 
@@ -273,20 +256,6 @@ function og_tags(array $p): string
     return $o . "<meta name=\"twitter:card\" content=\"summary_large_image\">\n";
 }
 
-/* ---------- content ---------- */
-
-function projects(): array
-{
-    static $p = null;
-    return $p ??= require ROOT . '/includes/content.php';
-}
-
-function project(string $slug): ?array
-{
-    foreach (projects() as $p) if ($p['slug'] === $slug) return $p;
-    return null;
-}
-
 /** Last real edit of a page's source, for honest sitemap lastmod. */
 function lastmod(string ...$files): string
 {
@@ -298,7 +267,43 @@ function lastmod(string ...$files): string
     return date('c', $t ?: time());
 }
 
-/* ---------- mail (optional SMTP notification; the form saves even if this fails) ---------- */
+/* ---------- phone ---------- */
+
+/** +9647700835557 -> 0770 083 5557 (Iraqi mobile display form) */
+function phone_local(string $e164): string
+{
+    $n = '0' . substr($e164, 4);
+    return substr($n, 0, 4) . ' ' . substr($n, 4, 3) . ' ' . substr($n, 7);
+}
+function whatsapp_url(string $e164): string
+{
+    return 'https://wa.me/' . ltrim($e164, '+');
+}
+
+/* ---------- mail: SMTP when configured, else the host's mail(); the form saves even if both fail ---------- */
+
+function notify_owner(string $subject, string $body, string $replyTo): bool
+{
+    if (SMTP_HOST !== '') return smtp_send($subject, $body, $replyTo);
+    $to = MAIL_TO !== '' ? MAIL_TO : CONTACT_EMAIL;
+    $host = preg_replace('/^www\./', '', explode(':', site_host())[0]);
+    // no mail server on a development machine; shared hosts (Hostinger, cPanel) provide mail()
+    if ($to === '' || ENV === 'local' || $host === 'localhost' || !str_contains($host, '.') || !function_exists('mail')) return false;
+    $strip = fn(string $s): string => str_replace(["\r", "\n"], ' ', $s);
+    $from = MAIL_FROM !== '' ? MAIL_FROM : 'website@' . $host;
+    $headers = [
+        'From: ' . $strip(SITE_NAME) . ' website <' . $strip($from) . '>',
+        'Reply-To: <' . $strip($replyTo) . '>',
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding: base64',
+    ];
+    $ok = @mail($strip($to), '=?UTF-8?B?' . base64_encode($strip($subject)) . '?=', chunk_split(base64_encode($body)), implode("\r\n", $headers));
+    if (!$ok) error_log('mail(): message not handed to the mail server');
+    return $ok;
+}
+
+/* ---------- SMTP ---------- */
 
 function smtp_send(string $subject, string $body, string $replyTo): bool
 {

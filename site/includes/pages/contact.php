@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (int)$db->lastInsertId();
         $db->prepare('DELETE FROM messages WHERE created_at < ?')->execute([date('c', strtotime('-12 months'))]);   // retention (privacy page)
         $body = "New message from the website\n\nName: {$values['name']}\nEmail: {$values['email']}\n\n{$values['message']}\n";
-        if (smtp_send('Website message from ' . mb_substr($values['name'], 0, 60), $body, $values['email'])) {
+        if (notify_owner('Website message from ' . mb_substr($values['name'], 0, 60), $body, $values['email'])) {
             $db->prepare('UPDATE messages SET mailed = 1 WHERE id = ?')->execute([$id]);
         }
         header('Location: ' . url('/contact', ['sent' => '1']), true, 303);
@@ -71,7 +71,7 @@ http_response_code($status);
 
 $sent = ($_GET['sent'] ?? '') === '1' && $_SERVER['REQUEST_METHOD'] === 'GET';
 $band = ['id' => 'contact-title', 'title' => $sent ? 'Message sent' : 'Get in touch', 'hour' => '0.84', 'progress' => '0.75', 'poster' => 'dawn',
-         'lede' => $sent ? 'Thank you. The summit fire is a little brighter for it. I reply by email.' : 'Tell me what you want to build. I reply by email.'];
+         'lede' => $sent ? 'Thank you. The summit fire is a little brighter for it. I will get back to you soon.' : 'Tell me about your business and what you want to build.'];
 require ROOT . '/includes/partials/scene-band.php';
 $field = function (string $k) use ($errors): string {
     return isset($errors[$k]) ? ' aria-invalid="true" aria-describedby="' . $k . '-error"' : ' aria-invalid="false"';
@@ -80,20 +80,14 @@ $field = function (string $k) use ($errors): string {
 <section class="ground ground--dawn" aria-label="<?= $sent ? 'What happens next' : 'Contact form' ?>">
   <div class="wrap split">
     <div class="contact-aside">
-<?php if (CONTACT_EMAIL !== ''): ?>
-      <p>Prefer email?</p>
-      <p><a class="link-arrow" href="mailto:<?= e(CONTACT_EMAIL) ?>"><?= e(CONTACT_EMAIL) ?></a></p>
-      <button class="button button--line" type="button" data-copy="<?= e(CONTACT_EMAIL) ?>" hidden><?= icon('copy') ?><span data-copy-label>Copy email address</span></button>
-      <p class="visually-hidden" aria-live="polite" data-copy-status></p>
-<?php else: ?>
-      <p>A few lines are enough: what you are building, for whom, and when you need it.</p>
-<?php endif ?>
+      <p class="contact-aside__lead">Faster on the phone? Call or WhatsApp me.</p>
+<?php $reachCopy = true; require ROOT . '/includes/partials/reach.php'; ?>
     </div>
 <?php if ($sent): ?>
     <div class="sent" data-flare>
       <p class="sent__title">Your message is on its way.</p>
-      <p>It is saved and I will answer at the email address you gave.<?php if (CONTACT_EMAIL !== ''): ?> If it is urgent, write to <a href="mailto:<?= e(CONTACT_EMAIL) ?>"><?= e(CONTACT_EMAIL) ?></a> directly.<?php endif ?></p>
-      <p><a class="link-arrow" href="<?= e(url('/work')) ?>">Back to the work<?= icon('arrow') ?></a></p>
+      <p>I will answer at the email address you gave. If it is urgent, call or WhatsApp me on <a href="tel:<?= e(CONTACT_PHONE) ?>"><span dir="ltr"><?= e(phone_local(CONTACT_PHONE)) ?></span></a>.</p>
+      <p><a class="link-arrow" href="<?= e(url('/')) ?>">Back to the home page<?= icon('arrow') ?></a></p>
     </div>
 <?php else: ?>
     <form class="form" method="post" action="<?= e(url('/contact')) ?>" novalidate data-form>
@@ -133,7 +127,7 @@ $field = function (string $k) use ($errors): string {
 <?php
 return [
     'title' => $sent ? 'Message sent' : 'Contact',
-    'description' => 'Get in touch with Ramyar Salah about real-time 3D and WebGPU work on the web.',
+    'description' => 'Get in touch with Ramyar Salah about a website, a desktop app or custom business software. Call or WhatsApp 0770 083 5557, or send a message.',
     'path' => '/contact',
     'scene' => 'band',
     'current' => '/contact',

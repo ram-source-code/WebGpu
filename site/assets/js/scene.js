@@ -1,5 +1,1 @@
-// Entry point. Module URLs are versioned through the import map in the page head.
-import { startScene } from 'rs/scene-core';
-
-const root = document.querySelector('[data-scene]');
-if (root) startScene(root);
+import{startScene as t}from"rs/core";const e=document.querySelector("[data-scene]");e&&t(e);

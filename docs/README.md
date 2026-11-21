@@ -30,11 +30,7 @@ site/
   robots.txt, sitemap    generated routes (includes/pages/robots.php, sitemap.php)
   favicon.ico icon.svg apple-touch-icon.png og-default.jpg
   assets/css/main.css    all styles (tokens at the top)
-  assets/js/scene.js     entry: starts the scene
-  assets/js/scene-core.js     terrain, camera, input, loop, fallbacks
-  assets/js/scene-webgpu.js   WebGPU: compute pass + render pass (WGSL)
-  assets/js/scene-webgl.js    WebGL2 fallback (GLSL)
-  assets/js/site.js      copy-email, form error announcements
+  assets/js/*.js         minified copies of src/js (see "Editing the scripts")
   assets/img/            posters (AVIF/WebP), icon sprite, ridge edge, arrow mask
   assets/fonts/          Anybody + Atkinson Hyperlegible Next (WOFF2) + OFL.txt
   includes/bootstrap.php fail-closed handler, CSP nonce, .env, canonical redirect, maintenance
@@ -48,11 +44,18 @@ site/
   data/                  .htaccess (deny) + created at runtime: keys.php, site.sqlite, php-error.log, maintenance.flag, backups/
 ```
 
+## Editing the scripts
+
+The readable scripts live in `src/js/` (outside `site/`, never uploaded):
+
+- `scene.js` entry · `scene-core.js` terrain, camera, input, loop, slow-device guard · `scene-a.js` first renderer · `scene-b.js` fallback renderer · `site.js` copy-email and form errors.
+
+`site/assets/js/` holds minified copies with comments and shader comments stripped, so the shipped files say nothing about how they are made. After editing `src/js`, run `sh tools/build-js.sh` (needs Node) and upload `site/` again.
+
 ## Where content lives
 
-- Projects: `includes/content.php`. Set `placeholder` to `false` and fill `title`, `year`, `role`, `summary`, `stack` once a project is real. A placeholder project is `noindex` and stays out of the sitemap. Its case-study body is in the placeholder branch of `includes/pages/project.php`.
-- Copy: `includes/pages/*.php`. Every `client('…')` call renders a visible `[CLIENT: …]` slot; search for `client(` to find them all.
-- Contact email shown on the site: `CONTACT_EMAIL` in an optional `.env` (none by default: the site shows the contact form only).
+- Copy: `includes/pages/*.php` (home, about, contact, privacy). There is no projects section yet: add a page and a route line in `includes/routes.php` when there is real work to show.
+- Contact details (email, phone/WhatsApp, Facebook): defaults in `SETTING_DEFAULTS` in `includes/functions.php`; an optional `.env` overrides them. They appear in the contact blocks (`includes/partials/reach.php`), the footer and the Person JSON-LD.
 
 ## Contact messages (no admin panel by design)
 
@@ -66,7 +69,7 @@ php includes/cli/messages.php backup                      # VACUUM INTO data/bac
 ```
 
 On shared hosting without SSH, run them through hPanel's cron ("run once") or ask for a copy of `data/site.sqlite` via the File Manager *after* a `backup` (never copy the live file).
-Email notifications: fill the `SMTP_*` and `MAIL_*` keys. Leave `SMTP_HOST = ""` to only save messages. If SMTP fails, the message is still saved (`mailed = 0`).
+Email notifications: every message is also emailed to `CONTACT_EMAIL` (or `MAIL_TO`) with the host's built-in `mail()`, from `website@<your domain>`. For better delivery, fill the `SMTP_*` keys from your host's email account. If sending fails the message is still saved (`mailed = 0`); on localhost nothing is sent.
 Messages older than 12 months are deleted automatically on each new message (privacy page promise).
 
 ## Deploy (Hostinger / any Apache or LiteSpeed host)

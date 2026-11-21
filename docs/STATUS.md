@@ -2,6 +2,30 @@
 
 Dev-only report (spec Part F). Built unattended on 20 Nov 2026. Statuses: ✅ ran it and saw the result · N/A with reason · `DEV` the developer must run it · ❌ failed (see Known issues).
 
+## Update 21 Nov 2026: final audit, no placeholders
+
+- Removed everything not real: the Work page, the project list, all case-study pages (the two empty slots and the site's own scene page) and the portrait slot. `/work` and `/work/*` now return 404; the sitemap lists only `/`, `/about`, `/contact`, `/privacy`. No `[CLIENT: …]` text remains on any page.
+- Home is now: hero → What I make → night window → contact close. Navigation: About, Contact.
+- Audit by the skills: Impeccable detector 0 findings on source and on every page at 1440 and 390 px; Modern Web Guidance legacy-scan 0 findings on `site/` and `src/js`.
+- Accessibility: axe-core clean on `/`, `/about`, `/contact`, `/contact?sent=1`, `/privacy`, 404, at 1280 and 360 px; keyboard walk, skip link, form errors, reduced motion, JS off all pass (20/20; the 21st "focus" check only flags focus leaving the page after the last link).
+- Lighthouse mobile: performance 98–99, accessibility 100, best practices 100, SEO 100 on all four pages; LCP 2.0–2.3 s; CLS ≤ 0.001 (body font now `font-display: optional`, preloaded, so long text never re-wraps; the display face stays `swap` so headings always show in it).
+
+## Update 20 Nov 2026: owner's real details
+
+- From the owner: phone/WhatsApp 0770 083 5557 (`tel:+9647700835557`, `wa.me/9647700835557`), email ramyar.techie@gmail.com, Facebook link, Bachelor's degree in IT, builds websites, desktop apps, admin utilities and custom business software for business owners, modern design taste. Used in the hero, a new "What I make" section, About, Contact, footer, Person JSON-LD (telephone, email, sameAs) and the link-preview image.
+- Form messages are now emailed to the owner with zero setup (host `mail()`, SMTP optional) and still saved first.
+- Still placeholders: portrait photo, two project slots.
+- GitHub hidden on request: `GITHUB_URL` setting, empty by default (no footer link, not in JSON-LD `sameAs`); set it in `.env` to show it again.
+- Checked: detector 0, axe clean, 21/21 browser tests.
+
+## Update 20 Nov 2026: smoothness pass and no build details on the page
+
+- Visible content no longer says how the site is made: no technology names in copy, titles, descriptions, the link-preview image or the scene controls (status line removed); no console messages or debug hooks; script files renamed and shipped minified from `src/js` (`tools/build-js.sh`). The browser APIs the scene needs (`getContext('webgpu')`, `'webgl2'`) cannot be hidden from someone reading the code.
+- Real info about the owner: nothing public was found by web search; the bio, portrait and two project slots stay `[CLIENT: …]` until the owner supplies them.
+- Scroll smoothness fixes: camera eases toward the scroll position (~0.22 s) instead of following it 1:1 (anchor jumps, flings, address-bar changes no longer jolt the view); the fixed scene is sized to `100lvh` and ignores address-bar height changes (no canvas reallocation mid-scroll); `pointercancel` handled (a touch that becomes a scroll no longer leaves a phantom torch pulling the procession); no camera parallax from taps; one redraw per frame while paused; camera matrices reused (no per-frame garbage); fallback shaders compile without blocking (`KHR_parallel_shader_compile`); no blend mode on the fixed rail; a fresh frame is drawn before a page-transition snapshot; smooth in-page anchor scrolling (motion allowed only).
+- Slow-device guard is now time-based: it lowers resolution after ~1 s of slow frames, then halves the torches, and stops (keeps the still) after ~2 s under 20 fps at the floor or two frames over 200 ms. Measured (software GPU, worst case): the scene stopped during start-up and a 5 s scripted scroll ran at p50/p95/max 17/17/17 ms with 0 long tasks; per-frame main-thread work (camera + pointer ray-march) 4–10 µs; one-time terrain set-up ~20 ms in 12 ms slices.
+- Re-checked: detector 0, axe clean on 8 pages × 2 widths, 21/21 browser tests, both renderers draw from the minified build.
+
 ## Update 20 Nov 2026: zero-setup deploy (owner: "I drop the website folder in the server and it must work")
 
 - `.env` is now optional. With none: links/canonical/sitemap/OG use the request host (validated pattern); `FORM_KEY`/`MAINT_KEY` are generated on the first request into `data/keys.php` (blocked); the https redirect is off until `CANONICAL_HOST` is set; `upgrade-insecure-requests` is sent only on HTTPS so a site without a certificate still loads; email links appear only when `CONTACT_EMAIL` is set.
