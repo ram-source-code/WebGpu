@@ -208,7 +208,7 @@ export async function startScene(root) {
     if (sameWidth && cssH > 1 && Math.abs(r.height - cssH) / cssH < 0.2 && canvas.width > 1 && state.quality === lastQuality) return;
     lastQuality = state.quality;
     cssW = Math.max(1, r.width); cssH = Math.max(1, r.height);
-    const dpr = Math.min(window.devicePixelRatio || 1, opts.lowPower ? 1.5 : 1.75) * state.quality;
+    const dpr = Math.min(window.devicePixelRatio || 1, force ? 3 : opts.lowPower ? 1.5 : 1.75) * state.quality;   // ?rsforce: full resolution for captures
     const w = Math.max(1, Math.round(cssW * dpr)), h = Math.max(1, Math.round(cssH * dpr));
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; renderer.resize(w, h); }
     if (paused) drawOnce();
