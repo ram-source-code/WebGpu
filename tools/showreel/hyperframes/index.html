@@ -51,11 +51,11 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="20" data-width="1080" data-height="1920" data-fps="60">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="20.571" data-width="1080" data-height="1920" data-fps="60">
 
       <!-- background: the site's night, blurred, behind the devices -->
       <video id="bg" class="full clip" src="media/scene.mp4" muted playsinline
-             data-start="2.9" data-duration="13.5" data-media-start="0.2" data-track-index="0"></video>
+             data-start="3.3" data-duration="13.5" data-media-start="0.2" data-track-index="0"></video>
 
       <!-- 1. the night, full screen -->
       <div id="open" class="layer">
@@ -73,13 +73,13 @@
       <div id="desk">
         <div class="bar"><i></i><i></i><i></i></div>
         <video id="desk-video" class="clip" src="media/desktop.mp4" muted playsinline
-               data-start="9.2" data-duration="7.3" data-media-start="6.4" data-track-index="2"></video>
+               data-start="10" data-duration="7" data-media-start="6.7" data-track-index="2"></video>
       </div>
 
       <div id="phone">
         <div class="screen">
           <video id="phone-video" class="clip" src="media/phone.mp4" muted playsinline
-                 data-start="2.9" data-duration="13.6" data-media-start="0.1" data-track-index="3"></video>
+                 data-start="3.3" data-duration="13.7" data-media-start="0" data-track-index="3"></video>
         </div>
       </div>
 
@@ -93,48 +93,48 @@
 
       <!-- sound: Mixkit effects (music is added in the app) -->
       <audio id="sfx-bass-rumble" class="clip" src="media/bass-rumble.wav" data-start="0" data-duration="4" data-volume="0.35" data-fade-in="0.4" data-fade-out="1.2" data-track-index="10"></audio>
-      <audio id="sfx-whoosh-cine" class="clip" src="media/whoosh-cine.wav" data-start="1.91" data-duration="1.33" data-volume="0.55" data-track-index="11"></audio>
-      <audio id="sfx-click-classic" class="clip" src="media/click-classic.wav" data-start="3.01" data-duration="0.29" data-volume="0.4" data-track-index="12"></audio>
-      <audio id="sfx-whoosh-arrow" class="clip" src="media/whoosh-arrow.wav" data-start="9.2" data-duration="1.1" data-volume="0.45" data-track-index="13"></audio>
-      <audio id="sfx-click-double" class="clip" src="media/click-double.wav" data-start="15.09" data-duration="0.47" data-volume="0.5" data-track-index="14"></audio>
-      <audio id="sfx-sweep-small" class="clip" src="media/sweep-small.wav" data-start="15.6" data-duration="0.78" data-volume="0.4" data-track-index="15"></audio>
-      <audio id="sfx-impact-deep" class="clip" src="media/impact-deep.wav" data-start="15.55" data-duration="4.4" data-volume="0.45" data-fade-out="1.5" data-track-index="16"></audio>
+      <audio id="sfx-whoosh-cine" class="clip" src="media/whoosh-cine.wav" data-start="2.34" data-duration="1.33" data-volume="0.55" data-track-index="11"></audio>
+      <audio id="sfx-click-classic" class="clip" src="media/click-classic.wav" data-start="3.514" data-duration="0.29" data-volume="0.4" data-track-index="12"></audio>
+      <audio id="sfx-whoosh-arrow" class="clip" src="media/whoosh-arrow.wav" data-start="9.99" data-duration="1.1" data-volume="0.45" data-track-index="13"></audio>
+      <audio id="sfx-click-double" class="clip" src="media/click-double.wav" data-start="15.586" data-duration="0.47" data-volume="0.5" data-track-index="14"></audio>
+      <audio id="sfx-sweep-small" class="clip" src="media/sweep-small.wav" data-start="16.847" data-duration="0.78" data-volume="0.4" data-track-index="15"></audio>
+      <audio id="sfx-impact-deep" class="clip" src="media/impact-deep.wav" data-start="16.592" data-duration="3.95" data-volume="0.45" data-fade-out="1.5" data-track-index="16"></audio>
     </div>
 
     <script>
-      // Calm motion only: fades and short slides, eased out. Nothing pulses on the beat.
+      // Cuts and entrances land on Mist's 140 BPM grid (beat 0.429 s, bar 1.714 s). Text never pulses.
       const tl = gsap.timeline({ paused: true });
       const ease = "power3.out";
+      const B = 0.42857142857142855, BAR = 1.7142857142857142;
 
-      // initial states
       gsap.set(["#cap2", "#cap3", "#note3", "#desk", "#phone", "#end", "#bg", "#name1", "#sub1"], { opacity: 0 });
 
-      // 1. name over the night (0 – 3.4)
+      // bars 0–2: name over the night
       tl.to("#scene", { scale: 1.06, duration: 3.6, ease: "none" }, 0);
-      tl.fromTo("#name1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.1, ease }, 0.25);
-      tl.fromTo("#sub1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.0, ease }, 0.75);
-      tl.to(["#name1", "#sub1"], { opacity: 0, duration: 0.45, ease: "power2.in" }, 2.75);
+      tl.fromTo("#name1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.1, ease }, 0);
+      tl.fromTo("#sub1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.0, ease }, BAR);
+      tl.to(["#name1", "#sub1"], { opacity: 0, duration: 0.4, ease: "power2.in" }, 2 * BAR - 0.4);
 
-      // 2. the phone (2.9 – 9.5)
-      tl.to("#bg", { opacity: 1, duration: 0.6, ease: "power1.out" }, 2.9);
-      tl.to("#open", { opacity: 0, duration: 0.6, ease: "power1.out" }, 3.0);
-      tl.fromTo("#phone", { opacity: 0, y: 140 }, { opacity: 1, y: 0, duration: 0.9, ease }, 2.9);
-      tl.fromTo("#cap2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease }, 3.3);
-      tl.to("#cap2", { opacity: 0, duration: 0.35, ease: "power2.in" }, 9.1);
+      // bar 2: the phone
+      tl.to("#bg", { opacity: 1, duration: 0.5, ease: "power1.out" }, 2 * BAR - 0.15);
+      tl.to("#open", { opacity: 0, duration: 0.5, ease: "power1.out" }, 2 * BAR);
+      tl.fromTo("#phone", { opacity: 0, y: 140 }, { opacity: 1, y: 0, duration: 0.9, ease }, 2 * BAR);
+      tl.fromTo("#cap2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease }, 2 * BAR + 2 * B);
+      tl.to("#cap2", { opacity: 0, duration: 0.35, ease: "power2.in" }, 6 * BAR - 0.4);
 
-      // 3. phone steps aside, desktop arrives (9.3 – 16.3)
-      tl.to("#phone", { x: 288, y: 330, scale: 0.62, duration: 1.0, ease: "power3.inOut" }, 9.25);
-      tl.fromTo("#desk", { opacity: 0, y: -70 }, { opacity: 1, y: 0, duration: 1.0, ease }, 9.45);
-      tl.fromTo("#cap3", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease }, 9.7);
-      tl.fromTo("#note3", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8, ease }, 10.3);
+      // bar 6: phone steps aside, desktop arrives on the downbeat
+      tl.to("#phone", { x: 288, y: 330, scale: 0.62, duration: 1.0, ease: "power3.inOut" }, 6 * BAR - 0.3);
+      tl.fromTo("#desk", { opacity: 0, y: -70 }, { opacity: 1, y: 0, duration: 1.0, ease }, 6 * BAR);
+      tl.fromTo("#cap3", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease }, 6 * BAR + 2 * B);
+      tl.fromTo("#note3", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8, ease }, 7 * BAR);
 
-      // 4. dawn (16.2 – 20)
-      tl.to("#end", { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 15.8);
-      tl.fromTo("#rule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease }, 16.2);
-      tl.fromTo("#name2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.0, ease }, 16.2);
-      tl.fromTo("#sub2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease }, 16.6);
-      tl.fromTo("#cta", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease }, 17.0);
-      tl.to({}, { duration: 0.01 }, 19.99);
+      // bar 10: dawn
+      tl.to("#end", { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 10 * BAR - 0.6);
+      tl.fromTo("#rule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease }, 10 * BAR);
+      tl.fromTo("#name2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.0, ease }, 10 * BAR);
+      tl.fromTo("#sub2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease }, 10 * BAR + 2 * B);
+      tl.fromTo("#cta", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease }, 11 * BAR);
+      tl.to({}, { duration: 0.01 }, 12 * BAR - 0.01);
 
       window.__timelines = window.__timelines || {};
       window.__timelines["main"] = tl;
