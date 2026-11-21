@@ -13,26 +13,6 @@ function json_script(mixed $v): string
     return json_encode($v, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
 }
 
-/** A visible placeholder for content only the owner can supply (spec: never invent content). */
-function client(string $what): string
-{
-    return '<span class="client-slot">[CLIENT: ' . e($what) . ']</span>';
-}
-
-/** One dashed block holding several owner-supplied lines (label => what to write). */
-function client_block(array $lines): string
-{
-    $o = '<span class="client-block">';
-    foreach ($lines as $label => $what) $o .= '<span class="client-block__line"><span class="client-block__label">' . e($label) . '</span> [CLIENT: ' . e($what) . ']</span>';
-    return $o . '</span>';
-}
-
-/** Where a project's fire sits on the road (0 = valley, 1 = summit), from its order in the list. */
-function climb_position(int $i, int $n): float
-{
-    return round(($i + 1) / ($n + 1), 2);
-}
-
 /* ---------- URLs (spec E.a) ---------- */
 
 // Pass paths un-encoded and site-relative; append "#fragment" after the call.
@@ -274,20 +254,6 @@ function og_tags(array $p): string
     $o = '';
     foreach ($t as $k => $v) $o .= '<meta property="' . $k . '" content="' . e((string)$v) . "\">\n";
     return $o . "<meta name=\"twitter:card\" content=\"summary_large_image\">\n";
-}
-
-/* ---------- content ---------- */
-
-function projects(): array
-{
-    static $p = null;
-    return $p ??= require ROOT . '/includes/content.php';
-}
-
-function project(string $slug): ?array
-{
-    foreach (projects() as $p) if ($p['slug'] === $slug) return $p;
-    return null;
 }
 
 /** Last real edit of a page's source, for honest sitemap lastmod. */

@@ -7,9 +7,6 @@ require ROOT . '/includes/partials/scene-band.php';
   <div class="wrap split">
     <h2 id="bio-title" class="section-title">In short</h2>
     <div class="prose">
-      <figure class="portrait">
-        <div class="portrait__slot"><?= client('portrait photo, 4:5, your own') ?></div>
-      </figure>
       <p>I am Ramyar Salah. I build the software a business runs on: websites, desktop apps, admin utilities and custom business software, made for the way each owner actually works.</p>
       <p>I hold a Bachelor’s degree in IT. I also care about how things look: my designs are modern and current, never stuck in old, legacy styles.</p>
       <p>If you have an idea for your business, a website you are not proud of, or a job your team still does by hand, I would like to hear about it.</p>

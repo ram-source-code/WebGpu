@@ -87,7 +87,7 @@ $field = function (string $k) use ($errors): string {
     <div class="sent" data-flare>
       <p class="sent__title">Your message is on its way.</p>
       <p>I will answer at the email address you gave. If it is urgent, call or WhatsApp me on <a href="tel:<?= e(CONTACT_PHONE) ?>"><span dir="ltr"><?= e(phone_local(CONTACT_PHONE)) ?></span></a>.</p>
-      <p><a class="link-arrow" href="<?= e(url('/work')) ?>">Back to the work<?= icon('arrow') ?></a></p>
+      <p><a class="link-arrow" href="<?= e(url('/')) ?>">Back to the home page<?= icon('arrow') ?></a></p>
     </div>
 <?php else: ?>
     <form class="form" method="post" action="<?= e(url('/contact')) ?>" novalidate data-form>

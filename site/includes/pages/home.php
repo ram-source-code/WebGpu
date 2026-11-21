@@ -1,13 +1,10 @@
-<?php
-$work = projects();
-?>
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero__copy">
     <h1 id="hero-title" class="hero__name"><span>Ramyar</span> <span>Salah</span></h1>
     <p class="hero__lede">I make business owners’ dreams come true: websites, desktop apps and custom business software.</p>
     <div class="hero__actions">
       <a class="button button--fire" href="<?= e(url('/contact')) ?>">Get in touch<?= icon('arrow') ?></a>
-      <a class="link-quiet" href="#work">See the work</a>
+      <a class="link-quiet" href="#make">What I make</a>
     </div>
   </div>
   <div class="scene-bar">
@@ -18,34 +15,7 @@ $work = projects();
   </div>
 </section>
 
-<section class="ground ground--night ground--see ridge-top ridge-bottom" id="work" aria-labelledby="work-title">
-  <div class="wrap">
-    <h2 id="work-title" class="section-title">Selected work</h2>
-    <p class="section-intro">Each project is a fire on the road up the ridge. Point at one and its stretch of the procession lights up behind the page.</p>
-    <ol class="climb">
-<?php foreach ($work as $i => $p): $at = climb_position($i, count($work)); ?>
-      <li class="climb__item<?= $p['placeholder'] ? ' climb__item--slot' : '' ?>">
-        <a class="climb__link" href="<?= e(url('/work/' . $p['slug'])) ?>" data-climb="<?= e((string)$at) ?>">
-<?php if ($p['placeholder']): ?>
-          <span class="climb__title">Case study, to be written</span>
-          <span class="climb__meta">Fire <?= (int)round($at * 100) ?>% up the road</span>
-          <?= client_block(['Title' => 'project name', 'Year and role' => 'e.g. 2025, lead developer', 'Summary' => 'one sentence: what it is and what you did']) ?>
-<?php else: ?>
-          <span class="climb__title"><?= e($p['title']) ?></span>
-          <span class="climb__meta"><?= e($p['year'] . ' · ' . $p['role']) ?> · fire <?= (int)round($at * 100) ?>% up the road</span>
-          <span class="climb__summary"><?= e($p['summary']) ?></span>
-<?php endif ?>
-        </a>
-      </li>
-<?php endforeach ?>
-    </ol>
-    <p class="more"><a class="link-arrow" href="<?= e(url('/work')) ?>">All work<?= icon('arrow') ?></a></p>
-  </div>
-</section>
-
-<div class="window"><p class="window__caption">Midnight. The line reaches the summit.</p></div>
-
-<section class="ground ground--ember ridge-top ridge-bottom" aria-labelledby="make-title">
+<section class="ground ground--ember ridge-top ridge-bottom" id="make" aria-labelledby="make-title">
   <div class="wrap split">
     <div>
       <h2 id="make-title" class="section-title">What I make</h2>
@@ -63,7 +33,7 @@ $work = projects();
   </div>
 </section>
 
-<div class="window window--dawn"><p class="window__caption">Before dawn. The fire is still burning.</p></div>
+<div class="window"><p class="window__caption">Midnight. The line reaches the summit.</p></div>
 
 <section class="ground ground--dawn ridge-top" aria-labelledby="close-title">
   <div class="wrap close">

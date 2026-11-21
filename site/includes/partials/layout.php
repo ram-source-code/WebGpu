@@ -4,7 +4,7 @@
 $title = $meta['title'];
 $fullTitle = $meta['path'] === '/' ? $title : $title . ' · ' . SITE_NAME;
 $current = $meta['current'] ?? '';
-$nav = ['/work' => 'Work', '/about' => 'About', '/contact' => 'Contact'];
+$nav = ['/about' => 'About', '/contact' => 'Contact'];
 $person = [
     '@context' => 'https://schema.org',
     '@type' => 'Person',

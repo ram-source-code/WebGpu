@@ -2,6 +2,14 @@
 
 Dev-only report (spec Part F). Built unattended on 20 Nov 2026. Statuses: ✅ ran it and saw the result · N/A with reason · `DEV` the developer must run it · ❌ failed (see Known issues).
 
+## Update 21 Nov 2026: final audit, no placeholders
+
+- Removed everything not real: the Work page, the project list, all case-study pages (the two empty slots and the site's own scene page) and the portrait slot. `/work` and `/work/*` now return 404; the sitemap lists only `/`, `/about`, `/contact`, `/privacy`. No `[CLIENT: …]` text remains on any page.
+- Home is now: hero → What I make → night window → contact close. Navigation: About, Contact.
+- Audit by the skills: Impeccable detector 0 findings on source and on every page at 1440 and 390 px; Modern Web Guidance legacy-scan 0 findings on `site/` and `src/js`.
+- Accessibility: axe-core clean on `/`, `/about`, `/contact`, `/contact?sent=1`, `/privacy`, 404, at 1280 and 360 px; keyboard walk, skip link, form errors, reduced motion, JS off all pass (20/20; the 21st "focus" check only flags focus leaving the page after the last link).
+- Lighthouse mobile: performance 98–99, accessibility 100, best practices 100, SEO 100 on all four pages; LCP 2.0–2.3 s; CLS ≤ 0.001 (body font now `font-display: optional`, preloaded, so long text never re-wraps; the display face stays `swap` so headings always show in it).
+
 ## Update 20 Nov 2026: owner's real details
 
 - From the owner: phone/WhatsApp 0770 083 5557 (`tel:+9647700835557`, `wa.me/9647700835557`), email ramyar.techie@gmail.com, Facebook link, Bachelor's degree in IT, builds websites, desktop apps, admin utilities and custom business software for business owners, modern design taste. Used in the hero, a new "What I make" section, About, Contact, footer, Person JSON-LD (telephone, email, sameAs) and the link-preview image.

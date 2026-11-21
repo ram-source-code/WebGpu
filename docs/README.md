@@ -54,8 +54,7 @@ The readable scripts live in `src/js/` (outside `site/`, never uploaded):
 
 ## Where content lives
 
-- Projects: `includes/content.php`. Set `placeholder` to `false` and fill `title`, `year`, `role`, `summary`, `stack` once a project is real. A placeholder project is `noindex` and stays out of the sitemap. Its case-study body is in the placeholder branch of `includes/pages/project.php`.
-- Copy: `includes/pages/*.php`. Every `client('…')` call renders a visible `[CLIENT: …]` slot; search for `client(` to find them all.
+- Copy: `includes/pages/*.php` (home, about, contact, privacy). There is no projects section yet: add a page and a route line in `includes/routes.php` when there is real work to show.
 - Contact details (email, phone/WhatsApp, Facebook): defaults in `SETTING_DEFAULTS` in `includes/functions.php`; an optional `.env` overrides them. They appear in the contact blocks (`includes/partials/reach.php`), the footer and the Person JSON-LD.
 
 ## Contact messages (no admin panel by design)

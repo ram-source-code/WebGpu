@@ -328,14 +328,6 @@ export async function startScene(root) {
   toggle?.addEventListener('click', () => setPaused(!paused, true));
   setPaused(paused, false);
 
-  // work entries are fires on the road: hovering or focusing one lights its stretch of the procession
-  for (const el of document.querySelectorAll('[data-climb]')) {
-    const on = () => { state.focus[0] = Number(el.dataset.climb); state.focusTarget = 1; if (paused) { state.focus[1] = 1; drawOnce(); } };
-    const off = () => { state.focusTarget = 0; if (paused) { state.focus[1] = 0; drawOnce(); } };
-    el.addEventListener('pointerenter', on); el.addEventListener('focus', on);
-    el.addEventListener('pointerleave', off); el.addEventListener('blur', off);
-  }
-
   // the case study's hour slider
   const hourInput = document.querySelector('[data-scene-hour]');
   if (hourInput) {
